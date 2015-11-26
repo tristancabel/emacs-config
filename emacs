@@ -1,10 +1,16 @@
 ;; .emacs
 
 ;;; uncomment this line to disable loading of "default.el" at startup
-;; (setq inhibit-default-init t)
+ (setq inhibit-default-init t)
 
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(require 'package) ;; You might already have this line
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+
+(package-initialize) 
+
+;(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+;                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 ;; turn on font-lock mode
 (when (fboundp 'global-font-lock-mode)

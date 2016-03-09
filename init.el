@@ -1,11 +1,18 @@
 ;; .emacs
 
+;; set email address
+(setq user-mail-address "tristan.cabel@inria.fr")
+
 ;;; uncomment this line to disable loading of "default.el" at startup
- (setq inhibit-default-init t)
+(setq inhibit-default-init t)
 
 (require 'package) ;; You might already have this line
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
+
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 
 (package-initialize) 
 
@@ -19,15 +26,16 @@
 ;; enable visual feedback on selections
 (setq transient-mark-mode t)
 
-(setq c-default-style "linux"
-      c-basic-offset 4)
+(setq c-default-style "linux" c-basic-offset 4)
 
-(setq-default indent-tabs-mode nil) ; always replace tabs with spaces
-(setq-default tab-width 4); set tab width to 4 for all buffers
+;; always replace tabs with spaces
+(setq-default indent-tabs-mode nil)
+
+;; set tab width to 4 for all buffers
+(setq-default tab-width 4)
 
 ;; default to better frame titles
-(setq frame-title-format
-      (concat  "%b - emacs@" system-name))
+(setq frame-title-format  (concat  "%b - emacs@" system-name))
 
 ;; default to unified diffs
 (setq diff-switches "-u")
@@ -47,9 +55,12 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Highlight current line
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;(global-hl-line-mode +1)
 
-(global-hl-line-mode +1)
-
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Highlight git lines change
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(global-git-gutter-mode +1)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;;color-mode
@@ -106,7 +117,6 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-x C-g") 'magit-status)
-
 
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -27,6 +27,7 @@
 ;; ;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-c v m") 'magit-status)
 (global-set-key (kbd "C-c v l") 'magit-log)
+(global-set-key (kbd "C-c v b") 'magit-blame)
 
 (global-set-key (kbd "C-=") 'er/expand-region)
 

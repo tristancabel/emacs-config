@@ -12,24 +12,27 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 
-
+(require 'cl-lib)
 (package-initialize) 
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; get and install required packages
-;; helm -> Emacs incremental completion and selection narrowing framewor
+;; dash -> A modern list api for Emacs. 
 ;; projectile -> project interaction library for Emacs.
+;; helm -> Emacs incremental completion and selection narrowing framework
 ;; helm-projectile -> Helm UI for Projectile
+;; helm-dash -> helm integration with dash
 ;; magit -> git mode
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 (setq url-http-attempt-keepalives nil)
 
-(defvar init-packages '(helm projectile helm-projectile magit
-			     cmake-mode markdown-mode python-mode scala-mode )
+(defvar init-packages '(helm projectile esqlite dash helm-projectile magit
+			     helm-dash cmake-mode markdown-mode
+			     python-mode scala-mode )
   "A list of packages to ensure are installed at launch.")
 
 (defun init-packages-installed-p ()
-  (every #'package-installed-p init-packages))
+  (cl-every #'package-installed-p init-packages))
 
 (defun init-require-package (package)
   "Install PACKAGE unless already installed."
@@ -46,12 +49,12 @@
   (package-refresh-contents)
   (message "%s" " done.")
   ;; install the missing packages
-  (mapc #'init-require-package packages))
+  (mapc #'init-require-package init-packages)))
 
 ;; run package installation
 (init-install-packages)
 
-(provide 'packages-list)
+(provide 'init-packages)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; variable configurations
@@ -80,10 +83,30 @@
 ;; set file to auto refresh when change detected (➢ for example: changed by other)
 (global-auto-revert-mode 1)
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; reduce the frequency of garbage collection by making it happen on
+;; each 50MB of allocated data (the default is on every 0.76MB)
+(setq gc-cons-threshold 50000000)
+
+;; warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
+
+;; Newline at end of file
+(setq require-final-newline t)
+
 ;; Highlight current line
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;(global-hl-line-mode +1)
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; packages configuration
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ediff - don't start another frame
+;;(require 'ediff)
+;;(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+;;(setq helm-dash-min-length 3)
+
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Highlight git lines change
@@ -108,12 +131,6 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 (setq auto-mode-alist (append '(("/*.\.tpp$" . c++-mode)) auto-mode-alist))
 
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; magit
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; rename a file

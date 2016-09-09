@@ -214,9 +214,6 @@
 ;;(setq helm-dash-docsets-path (format "%s/.emacs.d/docsets" (getenv "HOME")))
 ;;(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
-
 (setq helm-candidate-number-limit 100)
 
 ;; From https://gist.github.com/antifuchs/9238468
@@ -228,6 +225,7 @@
       helm-ff-skip-boring-files t
       helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
       helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+      helm-display-header-line nil
       )
 
 (global-set-key(kbd "C-c h") 'helm-mini)
@@ -246,6 +244,12 @@
 ;(global-set-key(kbd "C-x c SPC") 'helm-all-mark-rings) ;; WHAT
 (ido-mode -1) ;; Turn off ido mode in case I enabled it accidentally
 (helm-mode 1)
+(helm-autoresize-mode 1)
+(setq helm-autoresize-max-height 30)
+(setq helm-autoresize-min-height 30)
+
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
 
 ;;projectile
 ;; ;;;;;;;;;;;;;;;;;;;;

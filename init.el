@@ -1,6 +1,7 @@
 ;; .emacs
 
-;; set email address
+;; set user name and email address
+(setq user-full-name "Tristan Cabel")
 (setq user-mail-address "tristan.cabel@amadeus.com")
 
 ;;; uncomment this line to disable loading of "default.el" at startup
@@ -23,12 +24,14 @@
 ;; helm-projectile -> Helm UI for Projectile
 ;; helm-dash -> helm integration with dash
 ;; magit -> git mode
+;; smart-mode-line -> line model
+;; undo-tree -> undo and redo functions
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 (setq url-http-attempt-keepalives nil)
 
 (defvar init-packages '(helm projectile esqlite dash helm-projectile magit
 			     helm-dash cmake-mode markdown-mode
-			     python-mode scala-mode )
+			     python-mode scala-mode smart-mode-line undo-tree )
   "A list of packages to ensure are installed at launch.")
 
 (defun init-packages-installed-p ()
@@ -96,35 +99,107 @@
 ;; Highlight current line
 ;;(global-hl-line-mode +1)
 
+;; Highlight git lines change
+(global-git-gutter-mode +1)
+
+;; set custom backup directory  ~ files
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+
+;; yes or no as y-or-n
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; save disk space ?
+;;(setq delete-old-versions -1)
+;;(setq version-control t)
+;;(setq vc-make-backup-files t)
+;;(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; key bindings
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Font size
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+
+; kill lines backward
+(global-set-key (kbd "C-<backspace>") (lambda ()
+                                        (interactive)
+                                        (kill-line 0)
+                                        (indent-according-to-mode)))
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; packages configuration
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; ediff - don't start another frame
-;;(require 'ediff)
-;;(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+;; smart-mode-line
+;; ;;;;;;;;;;;;;;;;;;;;
+(setq sml/no-confirm-load-theme t)
+(sml/setup)
 
+;; undo-tree
+;; ;;;;;;;;;;;;;;;;;;;;
+(global-undo-tree-mode)
+(setq undo-tree-visualizer-timestamps t)
+(setq undo-tree-visualizer-diff t)
+
+;; magit
+;; ;;;;;;;;;;;;;;;;;;;;
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+;;projectile
+;; ;;;;;;;;;;;;;;;;;;;;
+;; extra prefix for projectile
+;;(define-key map (kbd "s-p") 'projectile-command-map)
+
+
+;; ediff - don't start another frame
+(require 'ediff)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+;;helm
+;; ;;;;;;;;;;;;;;;;;;;;
 ;;(setq helm-dash-min-length 3)
 
-(global-set-key (kbd "C-x g") 'magit-status)
+(setq helm-candidate-number-limit 100)
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Highlight git lines change
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-git-gutter-mode +1)
+;; From https://gist.github.com/antifuchs/9238468
+(setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
+      helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly.
+      helm-yas-display-key-on-candidate t
+      helm-quick-update t
+      helm-M-x-requires-pattern nil
+      helm-ff-skip-boring-files t)
+
+(global-set-key(kbd "C-c h") 'helm-mini)
+(global-set-key(kbd "C-h a") 'helm-apropos)
+(global-set-key(kbd "C-x C-b") 'helm-buffers-list)
+(global-set-key(kbd "C-x b") 'helm-buffers-list)
+(global-set-key(kbd "M-y") 'helm-show-kill-ring)
+(global-set-key(kbd "M-x") 'helm-M-x)
+(global-set-key(kbd "C-x c o") 'helm-occur) ;; WHAT
+(global-set-key(kbd "C-x c s") 'helm-swoop) ;; WHAT
+(global-set-key(kbd "C-x c y") 'helm-yas-complete) ;; WHAT
+(global-set-key(kbd "C-x c Y") 'helm-yas-create-snippet-on-region) ;; WHAT
+(global-set-key(kbd "C-x c b") 'my/helm-do-grep-book-notes) ;; WHAT
+(global-set-key(kbd "C-x c SPC") 'helm-all-mark-rings) ;; WHAT
+(ido-mode -1) ;; Turn off ido mode in case I enabled it accidentally
 
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; helm tuning
-;;
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
 ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
 ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-(global-unset-key (kbd "C-x c"))
+;;(global-set-key (kbd "C-c h") 'helm-command-prefix)
+;;(global-unset-key (kbd "C-x c"))
 
 (helm-mode 1)
+
+;;helm-dash
+
+;;helm-projectile
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; C++ Mode for tpp

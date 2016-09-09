@@ -158,12 +158,11 @@
 (add-to-list 'auto-mode-alist '("\\.info\\'"        . info-mode))
 (add-to-list 'auto-mode-alist '("\\.qmltypes\\'"    . json-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs\\'"         . html-mode))
-
-(use-package      cmake-mode :mode "\\.cmake\\'" "\\CMakeLists.txt\\'")
-(use-package javascript-mode :mode "\\.qs\\'")
-(use-package       yaml-mode :mode "\\.yml\\'")
-(use-package        js2-mode :mode "\\.js\\'")
-(use-package       json-mode :mode "\\.json\\'")
+;;(use-package      cmake-mode :mode "\\.cmake\\'" "\\CMakeLists.txt\\'")
+;;(use-package javascript-mode :mode "\\.qs\\'")
+;;(use-package       yaml-mode :mode "\\.yml\\'")
+;;(use-package        js2-mode :mode "\\.js\\'")
+;;(use-package       json-mode :mode "\\.json\\'")
 
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

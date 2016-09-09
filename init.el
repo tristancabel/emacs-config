@@ -27,6 +27,8 @@
 ;; magit -> git mode
 ;; smart-mode-line -> line model
 ;; undo-tree -> undo and redo functions
+;; use-package -> The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy.
+;; which-key -> which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command
 ;;
 ;;
 ;;   dash -> A modern list api for Emacs. 
@@ -35,7 +37,8 @@
 (setq url-http-attempt-keepalives nil)
 
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
-                             beacon smart-mode-line undo-tree
+                             beacon smart-mode-line undo-tree use-package
+                             which-key 
                              cmake-mode markdown-mode js2-mode json-mode 
                              python-mode scala-mode yaml-mode html-mode  )
   "A list of packages to ensure are installed at launch.")
@@ -111,6 +114,9 @@
 ;; set custom backup directory  ~ files
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
+;; no more tool bar
+(tool-bar-mode 0)
+
 ;; yes or no as y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -158,11 +164,11 @@
 (add-to-list 'auto-mode-alist '("\\.info\\'"        . info-mode))
 (add-to-list 'auto-mode-alist '("\\.qmltypes\\'"    . json-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs\\'"         . html-mode))
-;;(use-package      cmake-mode :mode "\\.cmake\\'" "\\CMakeLists.txt\\'")
-;;(use-package javascript-mode :mode "\\.qs\\'")
-;;(use-package       yaml-mode :mode "\\.yml\\'")
-;;(use-package        js2-mode :mode "\\.js\\'")
-;;(use-package       json-mode :mode "\\.json\\'")
+(use-package      cmake-mode :mode "\\.cmake\\'" "\\CMakeLists.txt\\'")
+(use-package javascript-mode :mode "\\.qs\\'")
+(use-package       yaml-mode :mode "\\.yml\\'")
+(use-package        js2-mode :mode "\\.js\\'")
+(use-package       json-mode :mode "\\.json\\'")
 
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -181,8 +187,12 @@
 (setq undo-tree-visualizer-diff t)
 
 ;; highlight cursor after window moves
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;;;;;;;;;;;;;;;;;;;
 (beacon-mode 1)
+
+;; which-key
+;; ;;;;;;;;;;;;;;;;;;;;
+(which-key-mode)
 
 ;; magit
 ;; ;;;;;;;;;;;;;;;;;;;;

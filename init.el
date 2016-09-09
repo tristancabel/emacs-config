@@ -1,24 +1,61 @@
 ;; .emacs
 
 ;; set email address
-(setq user-mail-address "tristan.cabel@inria.fr")
+(setq user-mail-address "tristan.cabel@amadeus.com")
 
 ;;; uncomment this line to disable loading of "default.el" at startup
 (setq inhibit-default-init t)
 
-(require 'package) ;; You might already have this line
+(load-theme 'tango-dark)
+
+(require 'package) 
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 
 (package-initialize) 
 
-;(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-;                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;; get and install required packages
+;; helm -> Emacs incremental completion and selection narrowing framewor
+;; projectile -> project interaction library for Emacs.
+;; helm-projectile -> Helm UI for Projectile
+;; magit -> git mode
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+(setq url-http-attempt-keepalives nil)
 
+(defvar init-packages '(helm projectile helm-projectile magit
+			     cmake-mode markdown-mode python-mode scala-mode )
+  "A list of packages to ensure are installed at launch.")
+
+(defun init-packages-installed-p ()
+  (every #'package-installed-p init-packages))
+
+(defun init-require-package (package)
+  "Install PACKAGE unless already installed."
+  (unless (memq package init-packages)
+    (add-to-list 'init-packages package))
+  (unless (package-installed-p package)
+    (package-install package)))
+
+(defun init-install-packages ()
+"Install all packages listed in `init-packages'."
+(unless (init-packages-installed-p)
+  ;; check for new packages (package versions)
+  (message "%s" "Emacs is now refreshing its package database...")
+  (package-refresh-contents)
+  (message "%s" " done.")
+  ;; install the missing packages
+  (mapc #'init-require-package packages))
+
+;; run package installation
+(init-install-packages)
+
+(provide 'packages-list)
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;; variable configurations
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; turn on font-lock mode
 (when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))
@@ -26,7 +63,7 @@
 ;; enable visual feedback on selections
 (setq transient-mark-mode t)
 
-(setq c-default-style "linux" c-basic-offset 4)
+(setq c-default-style "linux" c-basic-offset 2)
 
 ;; always replace tabs with spaces
 (setq-default indent-tabs-mode nil)
@@ -40,17 +77,8 @@
 ;; default to unified diffs
 (setq diff-switches "-u")
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;; Support for creation and update of file headers  
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-(load-file "~/.emacs.d/lisp/header2.el")
-;;(setq header-copyright-notice "Copyright (C) 2015 - Tristan Cabel, INRIA.\n")
-(define-key global-map "\C-x\C-hm" 'make-header)
-(define-key global-map "\C-x\C-hr" 'make-revision)
-(define-key global-map "\C-x\C-hd" 'make-divider)
-(define-key global-map "\C-x\C-hb" 'make-box-comment)
-(define-key global-map "\C-x\C-hu" 'update-file-header)
-(add-hook 'write-file-hooks 'auto-update-file-header)
+;; set file to auto refresh when change detected (➢ for example: changed by other)
+(global-auto-revert-mode 1)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Highlight current line
@@ -62,67 +90,34 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-git-gutter-mode +1)
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;;color-mode
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-(add-to-list 'load-path "~/.emacs.d/lisp/color-theme-6.6.0")
-(require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-charcoal-black)))
 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; helm tuning
+;;
+;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
+;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
+;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;; Load sourcePair
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-(load-file "~/.emacs.d/lisp/sourcepair.el")
-(define-key global-map "\C-xz" 'sourcepair-load)
-
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;; Cuda Mode
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;(autoload 'cuda-mode "~/.emacs.d/lisp/cuda-mode.el" "Cuda mode." t)
-;(setq auto-mode-alist (append '(("/*.\.cu$" . cuda-mode)) auto-mode-alist))
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;; OpenCL Mode
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;(setq auto-mode-alist (append '(("/*.\.cl$" . c-mode)) auto-mode-alist))
+(helm-mode 1)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; C++ Mode for tpp
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 (setq auto-mode-alist (append '(("/*.\.tpp$" . c++-mode)) auto-mode-alist))
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;; CMake Mode
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-(autoload 'cmake-mode "~/.emacs.d/lisp/cmake-mode.el" "Cmake mode." t)
-(require 'cmake-mode)
-  (setq auto-mode-alist
-        (append '(("CMakeLists\\.txt\\'" . cmake-mode)
-                  ("\\.cmake\\'" . cmake-mode))
-                auto-mode-alist))
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;; QML Mode
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-(autoload 'qml-mode "~/.emacs.d/lisp/qml-mode.el" "QML mode." t)
-(setq auto-mode-alist (append '(("/*.\.qml$" . qml-mode)) auto-mode-alist))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Git
+;; magit
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(global-set-key (kbd "C-x C-g") 'magit-status)
-
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; rename a file
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (defun rename-current-buffer-file ()
   "Renames current buffer and file it is visiting."

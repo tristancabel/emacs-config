@@ -40,7 +40,7 @@
                              beacon smart-mode-line undo-tree use-package
                              which-key 
                              cmake-mode markdown-mode js2-mode json-mode 
-                             python-mode scala-mode yaml-mode html-mode  )
+                             python-mode scala-mode yaml-mode ac-html  )
   "A list of packages to ensure are installed at launch.")
 
 (defun init-packages-installed-p ()
@@ -131,8 +131,8 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Font size
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-+") 'zoom-frm-in)
+(global-set-key (kbd "C--") 'zoom-frm-out)
 
 ; kill lines backward
 (global-set-key (kbd "C-<backspace>") (lambda ()
@@ -214,6 +214,9 @@
 ;;(setq helm-dash-docsets-path (format "%s/.emacs.d/docsets" (getenv "HOME")))
 ;;(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
+
 (setq helm-candidate-number-limit 100)
 
 ;; From https://gist.github.com/antifuchs/9238468
@@ -222,29 +225,26 @@
       helm-yas-display-key-on-candidate t
       helm-quick-update t
       helm-M-x-requires-pattern nil
-      helm-ff-skip-boring-files t)
+      helm-ff-skip-boring-files t
+      helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+      )
 
 (global-set-key(kbd "C-c h") 'helm-mini)
 (global-set-key(kbd "C-h a") 'helm-apropos)
 (global-set-key(kbd "C-x C-b") 'helm-buffers-list)
-(global-set-key(kbd "C-x b") 'helm-buffers-list)
+(global-set-key(kbd "C-x b") 'helm-mini)
 (global-set-key(kbd "M-y") 'helm-show-kill-ring)
 (global-set-key(kbd "M-x") 'helm-M-x)
-(global-set-key(kbd "C-x c o") 'helm-occur) ;; WHAT
-(global-set-key(kbd "C-x c s") 'helm-swoop) ;; WHAT
-(global-set-key(kbd "C-x c y") 'helm-yas-complete) ;; WHAT
-(global-set-key(kbd "C-x c Y") 'helm-yas-create-snippet-on-region) ;; WHAT
-(global-set-key(kbd "C-x c b") 'my/helm-do-grep-book-notes) ;; WHAT
-(global-set-key(kbd "C-x c SPC") 'helm-all-mark-rings) ;; WHAT
+(global-set-key(kbd "C-x C-f") 'helm-find-files)
+
+;(global-set-key(kbd "C-x c o") 'helm-occur) ;; WHAT
+;(global-set-key(kbd "C-x c s") 'helm-swoop) ;; WHAT
+;(global-set-key(kbd "C-x c y") 'helm-yas-complete) ;; WHAT
+;(global-set-key(kbd "C-x c Y") 'helm-yas-create-snippet-on-region) ;; WHAT
+;(global-set-key(kbd "C-x c b") 'my/helm-do-grep-book-notes) ;; WHAT
+;(global-set-key(kbd "C-x c SPC") 'helm-all-mark-rings) ;; WHAT
 (ido-mode -1) ;; Turn off ido mode in case I enabled it accidentally
-
-
-;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-;;(global-set-key (kbd "C-c h") 'helm-command-prefix)
-;;(global-unset-key (kbd "C-x c"))
-
 (helm-mode 1)
 
 ;;projectile
@@ -256,7 +256,6 @@
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
-
 
 
 ;; Completion hooks
@@ -274,7 +273,7 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; C++ Mode for tpp
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-(setq auto-mode-alist (append '(("/*.\.tpp$" . c++-mode)) auto-mode-alist))
+
 
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

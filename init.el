@@ -38,7 +38,7 @@
 
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
                              beacon smart-mode-line undo-tree use-package
-                             which-key 
+                             which-key company 
                              cmake-mode markdown-mode js2-mode json-mode 
                              python-mode scala-mode yaml-mode ac-html  )
   "A list of packages to ensure are installed at launch.")

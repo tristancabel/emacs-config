@@ -36,9 +36,6 @@
 ;; Highlight current line
 ;;(global-hl-line-mode +1)
 
-;; Highlight git lines change
-(global-git-gutter-mode +1)
-
 ;; set custom backup directory  ~ files
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 

@@ -25,10 +25,13 @@
 
 ;; magit
 ;; ;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+(global-set-key (kbd "C-c v m") 'magit-status)
+(global-set-key (kbd "C-c v l") 'magit-log)
 
 (global-set-key (kbd "C-=") 'er/expand-region)
+
+;; Highlight git lines change
+;;(global-git-gutter-mode +1)
 
 ;; ediff - don't start another frame
 (require 'ediff)

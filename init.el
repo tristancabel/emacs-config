@@ -18,20 +18,26 @@
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; get and install required packages
-;; dash -> A modern list api for Emacs. 
+;;
+;; beacon -> highlight cursor after window moves
+;; company -> Company is a modular in-buffer completion mechanism
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
 ;; helm-projectile -> Helm UI for Projectile
-;; helm-dash -> helm integration with dash
 ;; magit -> git mode
 ;; smart-mode-line -> line model
 ;; undo-tree -> undo and redo functions
+;;
+;;
+;;   dash -> A modern list api for Emacs. 
+;;   helm-dash -> helm integration with dash
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 (setq url-http-attempt-keepalives nil)
 
-(defvar init-packages '(helm projectile esqlite dash helm-projectile magit
-			     helm-dash cmake-mode markdown-mode
-			     python-mode scala-mode smart-mode-line undo-tree )
+(defvar init-packages '(helm projectile esqlite helm-projectile magit
+                             beacon smart-mode-line undo-tree
+                             cmake-mode markdown-mode js2-mode json-mode 
+                             python-mode scala-mode yaml-mode html-mode  )
   "A list of packages to ensure are installed at launch.")
 
 (defun init-packages-installed-p ()
@@ -128,6 +134,38 @@
                                         (kill-line 0)
                                         (indent-according-to-mode)))
 
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Modes setup
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-to-list 'auto-mode-alist '("\\.scala\\'"       . scala-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'"           . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.c\\'"           . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cc$"            . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.C$"             . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cpp$"           . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cxx$"           . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.tpp\\'"         . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.tcc$"           . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.hpp$"           . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.hxx$"           . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.qdoc$"          . c++-mode))
+(add-to-list 'auto-mode-alist '(".gitignore\\'"     . makefile-mode))
+(add-to-list 'auto-mode-alist '(".gitattributes\\'" . makefile-mode))
+(add-to-list 'auto-mode-alist '("qmldir\\'"         . makefile-mode))
+(add-to-list 'auto-mode-alist '("\\.pr[io]\\'"      . makefile-mode))
+(add-to-list 'auto-mode-alist '("\\.info\\'"        . info-mode))
+(add-to-list 'auto-mode-alist '("\\.qmltypes\\'"    . json-mode))
+(add-to-list 'auto-mode-alist '("\\.ejs\\'"         . html-mode))
+
+(use-package      cmake-mode :mode "\\.cmake\\'" "\\CMakeLists.txt\\'")
+(use-package javascript-mode :mode "\\.qs\\'")
+(use-package       yaml-mode :mode "\\.yml\\'")
+(use-package        js2-mode :mode "\\.js\\'")
+(use-package       json-mode :mode "\\.json\\'")
+
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; packages configuration
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -143,18 +181,16 @@
 (setq undo-tree-visualizer-timestamps t)
 (setq undo-tree-visualizer-diff t)
 
+;; highlight cursor after window moves
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(beacon-mode 1)
+
 ;; magit
 ;; ;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 
 (global-set-key (kbd "C-=") 'er/expand-region)
-
-;;projectile
-;; ;;;;;;;;;;;;;;;;;;;;
-;; extra prefix for projectile
-;;(define-key map (kbd "s-p") 'projectile-command-map)
-
 
 ;; ediff - don't start another frame
 (require 'ediff)
@@ -163,6 +199,11 @@
 ;;helm
 ;; ;;;;;;;;;;;;;;;;;;;;
 ;;(setq helm-dash-min-length 3)
+;;helm-dash
+;;(defun dash-install-dset (docset)
+;;  (unless (file-exists-p (
+;;(setq helm-dash-docsets-path (format "%s/.emacs.d/docsets" (getenv "HOME")))
+;;(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
 (setq helm-candidate-number-limit 100)
 
@@ -197,9 +238,29 @@
 
 (helm-mode 1)
 
-;;helm-dash
+;;projectile
+;; ;;;;;;;;;;;;;;;;;;;;
+;; extra prefix for projectile
+;;(define-key map (kbd "s-p") 'projectile-command-map)
 
 ;;helm-projectile
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+
+
+
+;; Completion hooks
+;; ;;;;;;;;;;;;;;;;;;;;
+(add-hook          'c-mode-hook 'company-mode)
+(add-hook        'c++-mode-hook 'company-mode)
+(add-hook       'objc-mode-hook 'company-mode)
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
+(add-hook      'cmake-mode-hook 'company-mode)
+(add-hook      'scala-mode-hook 'company-mode)
+(add-hook       'html-mode-hook 'company-mode)
+(add-hook        'qml-mode-hook 'company-mode)
+(add-hook        'js2-mode-hook 'company-mode)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; C++ Mode for tpp

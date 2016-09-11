@@ -1,10 +1,14 @@
-(use-package ensime
-  :pin melpa-stable)
+
+;;(ensime-mode +1)
 ;; helm integration with ensime
 (setq ensime-use-helm t)
 
 ;; SBT need to be on the path, otherwise do
 ;; (add-to-list 'exec-path "/usr/local/bin")
+
+;; create a gitignore_global and add ".ensime"
+;; do git config --global core.excludesfile ~/.gitignore_global
+
 
 ;; 1 generate a .ensime file
 ;;  1-1 with maven
@@ -30,3 +34,4 @@
 ;;debuggingOff — Remove debugging flags from all forked JVM processes.
 
 ;; 2 start ensime M-x ensime
+

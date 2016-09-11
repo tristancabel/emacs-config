@@ -13,6 +13,7 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 
+(require 'cl)
 (require 'cl-lib)
 (package-initialize) 
 
@@ -44,8 +45,8 @@
                              beacon rich-minority  undo-tree use-package
                              which-key company company-jedi company-web
                              company-emacs-eclim smart-mode-line ensime
-                             cmake-mode markdown-mode js2-mode json-mode 
-                             python-mode scala-mode yaml-mode ac-html  )
+                             cmake-mode markdown-mode js2-mode json-mode
+                             python-mode scala-mode yaml-mode ac-html)
   "A list of packages to ensure are installed at launch.")
 
 (defun init-packages-installed-p ()
@@ -146,13 +147,13 @@
                    name (file-name-nondirectory new-name)))))))
 
 (global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
-(custom-set-variables
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; ensime set up
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- (load-file "~/.emacs.d/ensim-configuration.el")
- 
+(load-file "~/.emacs.d/ensim-configuration.el")
+
+(custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.

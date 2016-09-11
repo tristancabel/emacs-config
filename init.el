@@ -21,6 +21,10 @@
 ;;
 ;; beacon -> highlight cursor after window moves
 ;; company -> Company is a modular in-buffer completion mechanism
+;; company-jedi -> Company for python
+;; company-emacs-eclim -> company for java
+;; company-web -> company for web development
+;; ensim -> scala dev environment
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
 ;; helm-projectile -> Helm UI for Projectile
@@ -37,8 +41,9 @@
 (setq url-http-attempt-keepalives nil)
 
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
-                             beacon smart-mode-line undo-tree use-package
-                             which-key company 
+                             beacon rich-minority  undo-tree use-package
+                             which-key company company-jedi company-web
+                             company-emacs-eclim smart-mode-line ensime
                              cmake-mode markdown-mode js2-mode json-mode 
                              python-mode scala-mode yaml-mode ac-html  )
   "A list of packages to ensure are installed at launch.")
@@ -141,3 +146,23 @@
                    name (file-name-nondirectory new-name)))))))
 
 (global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
+(custom-set-variables
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;; ensime set up
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ (load-file "~/.emacs.d/ensim-configuration.el")
+ 
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (company-jedi yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

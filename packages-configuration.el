@@ -97,12 +97,81 @@
 
 ;; Completion hooks
 ;; ;;;;;;;;;;;;;;;;;;;;
-(add-hook          'c-mode-hook 'company-mode)
-(add-hook        'c++-mode-hook 'company-mode)
-(add-hook       'objc-mode-hook 'company-mode)
-(add-hook 'emacs-lisp-mode-hook 'company-mode)
-(add-hook      'cmake-mode-hook 'company-mode)
-(add-hook      'scala-mode-hook 'company-mode)
-(add-hook       'html-mode-hook 'company-mode)
-(add-hook        'qml-mode-hook 'company-mode)
-(add-hook        'js2-mode-hook 'company-mode)
+
+(require 'company)
+(global-company-mode t)
+
+(setq company-idle-delay 0.2)
+(setq company-minimum-prefix-length 1)
+
+;; set default `company-backends'
+(setq company-backends
+      '((company-files          ; files & directory
+         company-keywords       ; keywords
+         company-capf
+         company-yasnippet
+         company-semantic
+         )
+        (company-abbrev company-dabbrev)
+        ))
+
+;; python
+;;  or company-anaconda
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-to-list (make-local-variable 'company-backends)
+                         'company-jedi)))
+
+;; javascript
+(dolist (hook '(js-mode-hook
+                js2-mode-hook
+                js3-mode-hook
+                inferior-js-mode-hook
+                ))
+  (add-hook hook
+            (lambda ()
+              (tern-mode t)
+              (add-to-list (make-local-variable 'company-backends)
+                           'company-tern)
+              )))
+
+
+;; web
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-to-list (make-local-variable 'company-backends)
+                         'company-web)))
+
+;; c 
+(dolist (hook '(c-mode-hook
+                c++-mode-hook
+                cmake-mode-hook
+                ))
+  (add-hook hook
+            (lambda ()
+              (tern-mode t)
+              (add-to-list (make-local-variable 'company-backends)
+                           'company-c)
+;              (add-to-list (make-local-variable 'company-backends)
+;                           'company-c++)
+              )))
+
+;; company for java 
+;;(require ‘company-emacs-eclim)
+;;(company-emacs-eclim-setup)
+;;(setq company-emacs-eclim-ignore-case t)
+
+;(add-hook      'scala-mode-hook 'company-mode)
+
+;; company colors
+ (require 'color)
+  
+  (let ((bg (face-attribute 'default :background)))
+    (custom-set-faces
+     `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+     `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+     `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+     `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+     `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
+
+(company-quickhelp-mode 1)

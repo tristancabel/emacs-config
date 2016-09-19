@@ -93,7 +93,7 @@
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
-
+(global-set-key(kbd "C-c p h") 'helm-projectile)
 
 ;; Completion hooks
 ;; ;;;;;;;;;;;;;;;;;;;;

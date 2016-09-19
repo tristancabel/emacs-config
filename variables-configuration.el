@@ -45,6 +45,9 @@
 ;; yes or no as y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; save desktop mode
+(desktop-save-mode 1)
+
 ;; save disk space ?
 ;;(setq delete-old-versions -1)
 ;;(setq version-control t)

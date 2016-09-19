@@ -44,7 +44,7 @@
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
                              beacon rich-minority  undo-tree use-package
                              which-key company company-jedi company-web
-                             company-emacs-eclim smart-mode-line ensime
+                             company-quickhelp smart-mode-line ensime
                              cmake-mode markdown-mode js2-mode json-mode
                              python-mode scala-mode yaml-mode ac-html)
   "A list of packages to ensure are installed at launch.")

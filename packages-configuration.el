@@ -25,9 +25,12 @@
 
 ;; magit
 ;; ;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-c v m") 'magit-status)
+(global-set-key (kbd "C-c v s") 'magit-status)
 (global-set-key (kbd "C-c v l") 'magit-log)
-(global-set-key (kbd "C-c v b") 'magit-blame)
+(global-set-key (kbd "C-c v v") 'magit-blame)
+(global-set-key (kbd "C-c v p") 'magit-pull)
+(global-set-key (kbd "C-c v b") 'magit-branch-popup)
+
 
 (global-set-key (kbd "C-=") 'er/expand-region)
 
@@ -137,10 +140,10 @@
 
 
 ;; web
-(add-hook 'python-mode-hook
-          (lambda ()
-            (add-to-list (make-local-variable 'company-backends)
-                         'company-web)))
+;(add-hook 'python-mode-hook
+;          (lambda ()
+;            (add-to-list (make-local-variable 'company-backends)
+;                         'company-web)))
 
 ;; c 
 (dolist (hook '(c-mode-hook

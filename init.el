@@ -25,7 +25,7 @@
 ;; company-jedi -> Company for python
 ;; company-emacs-eclim -> company for java
 ;; company-web -> company for web development
-;; ensim -> scala dev environment
+;; ensime -> scala dev environment
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
 ;; helm-projectile -> Helm UI for Projectile

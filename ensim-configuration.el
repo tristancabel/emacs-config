@@ -3,13 +3,15 @@
 ;; helm integration with ensime
 (setq ensime-use-helm t)
 
+;; SBT
+;;
 ;; SBT need to be on the path, otherwise do
 ;; (add-to-list 'exec-path "/usr/local/bin")
-
 ;; create a gitignore_global and add ".ensime"
 ;; do git config --global core.excludesfile ~/.gitignore_global
 
-
+;; maven
+;; 
 ;; 1 generate a .ensime file
 ;;  1-1 with maven
 ;; add ~/.m2/settings.xml and put
@@ -41,3 +43,45 @@
 
 ;; 2 start ensime M-x ensime
 
+(defun ensime-goto-test--test-template-amadeus-spark ()
+  ""
+  "package %TESTPACKAGE%
+
+import java.util
+
+import amadeus.SparkTest
+import amadeus.ti.data.model._
+import org.apache.spark.{SparkConf, SparkContext}
+import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers}
+
+class %TESTCLASS% extends FunSuite with SparkTest with Matchers {
+  describe (\"%IMPLPACKAGE%.%IMPLCLASS%\") {
+    it(\"should have a test!\") {
+      assert(1 === 0)
+    }
+  }
+}
+")
+
+(setq ensime-startup-snapshot-notification nil)
+
+(defun ensime-goto-test--is-test-dir-amadeus (dir)
+  (let ((case-fold-search nil))
+    (or
+     (string-match-p "src/test/scala/$" dir)
+     (string-match-p "src/it/scala/$" dir)
+     (string-match-p "src/fun/scala/$" dir)
+     (string-match-p "src-test/$" dir)
+     (string-match-p "/tests?/$" dir))))
+
+
+(defcustom ensime-goto-test-config-amadeus
+   '(:test-class-names-fn ensime-goto-test--test-class-names
+    :test-class-suffixes  ("Test" "Spec" "Specification" "Check")
+    :impl-class-name-fn ensime-goto-test--impl-class-name
+    :impl-to-test-dir-fn ensime-goto-test--impl-to-test-dir
+    :is-test-dir-fn ensime-goto-test--is-test-dir-amadeus
+    :test-template-fn ensime-goto-test--test-template-amadeus-spark)
+   "Configuration for amadeus projects "
+    :type 'plist
+    :group 'ensime-ui)

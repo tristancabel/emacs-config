@@ -20,15 +20,20 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; get and install required packages
 ;;
+;; anaconda-mode
 ;; beacon -> highlight cursor after window moves
 ;; company -> Company is a modular in-buffer completion mechanism
-;; company-jedi -> Company for python
+;;;; company-jedi -> Company for python
+;; company-anaconda
 ;; company-emacs-eclim -> company for java
 ;; company-web -> company for web development
+;; dash -> A modern list api for Emacs. No 'cl required.
 ;; ensime -> scala dev environment
+;; flycheck -> syntax checker
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
 ;; helm-projectile -> Helm UI for Projectile
+;; helm-flycheck -> Helm UI for flycheck
 ;; magit -> git mode
 ;; smart-mode-line -> line model
 ;; undo-tree -> undo and redo functions
@@ -43,7 +48,8 @@
 
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
                              beacon rich-minority  undo-tree use-package
-                             which-key company company-jedi company-web
+                             which-key helm-flycheck flycheck company
+                             anaconda-mode company-anaconda company-web dash
                              company-quickhelp smart-mode-line ensime
                              cmake-mode markdown-mode js2-mode json-mode
                              python-mode scala-mode yaml-mode ac-html)
@@ -160,10 +166,14 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (company-jedi yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html))))
+    (company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(company-scrollbar-bg ((t (:background "#454e51"))))
+ '(company-scrollbar-fg ((t (:background "#394143"))))
+ '(company-tooltip ((t (:inherit default :background "#32393b"))))
+ '(company-tooltip-common ((t (:inherit font-lock-constant-face))))
+ '(company-tooltip-selection ((t (:inherit font-lock-function-name-face)))))

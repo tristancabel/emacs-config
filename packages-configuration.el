@@ -87,6 +87,15 @@
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
 
+(eval-after-load 'flycheck
+  '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
+
+
+;; flycheck
+;; ;;;;;;;;;;;;;;;;;;;
+(add-hook 'python-mode-hook #'global-flycheck-mode)
+
+
 ;;projectile
 ;; ;;;;;;;;;;;;;;;;;;;;
 ;; extra prefix for projectile
@@ -97,6 +106,16 @@
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
 (global-set-key(kbd "C-c p h") 'helm-projectile)
+
+
+;; jedi
+;; ;;;;;;;;;;;;;;;;;;;
+
+;; sudo apt install virtualenv
+;; conda install jedi
+;; M-x jedi:install-server
+
+
 
 ;; Completion hooks
 ;; ;;;;;;;;;;;;;;;;;;;;
@@ -120,10 +139,11 @@
 
 ;; python
 ;;  or company-anaconda
+(add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook
           (lambda ()
             (add-to-list (make-local-variable 'company-backends)
-                         'company-jedi)))
+                         'company-anaconda)))
 
 ;; javascript
 (dolist (hook '(js-mode-hook

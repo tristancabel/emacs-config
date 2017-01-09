@@ -23,7 +23,6 @@
 ;; anaconda-mode
 ;; beacon -> highlight cursor after window moves
 ;; company -> Company is a modular in-buffer completion mechanism
-;;;; company-jedi -> Company for python
 ;; company-anaconda
 ;; company-emacs-eclim -> company for java
 ;; company-web -> company for web development

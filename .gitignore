@@ -3,3 +3,8 @@ session*
 elpa
 recentf
 projectile-bookmarks.eld
+.emacs*
+anaconda-mode/*
+backups/*
+ensime/*
+tramp

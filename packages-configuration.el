@@ -107,16 +107,6 @@
 (helm-projectile-on)
 (global-set-key(kbd "C-c p h") 'helm-projectile)
 
-
-;; jedi
-;; ;;;;;;;;;;;;;;;;;;;
-
-;; sudo apt install virtualenv
-;; conda install jedi
-;; M-x jedi:install-server
-
-
-
 ;; Completion hooks
 ;; ;;;;;;;;;;;;;;;;;;;;
 
@@ -137,8 +127,7 @@
         (company-abbrev company-dabbrev)
         ))
 
-;; python
-;;  or company-anaconda
+;; python: company-anaconda
 (add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook
           (lambda ()

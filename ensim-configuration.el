@@ -32,8 +32,15 @@
 ;;
 ;;
 ;;  1-2 with sbt
-;; add these lines to ~/.sbt/0.13/plugins/plugins.sbt
-;; addSbtPlugin("org.ensime" % "sbt-ensime" % "1.0.0") // ensime developers should use 1.9.0
+;; add these lines to ~/.sbt/0.13/global.sbt
+;; import org.ensime.EnsimeCoursierKeys._
+;; import org.ensime.EnsimeKeys._
+;;
+;; ensimeServerVersion in ThisBuild := "2.0.0-SNAPSHOT"
+;; ensimeIgnoreMissingDirectories := true
+
+;; then to  ~/.sbt/0.13/plugins/plugins.sbt
+;; addSbtPlugin("org.ensime" % "sbt-ensime" % "1.12.5") // ensime developers should use 1.9.0
 ;;
 ;; then use the following sbt commands
 ;;ensimeConfig — Generate a .ensime for the project (takes space-separated parameters to restrict to subprojects).
@@ -43,45 +50,17 @@
 
 ;; 2 start ensime M-x ensime
 
-(defun ensime-goto-test--test-template-amadeus-spark ()
-  ""
-  "package %TESTPACKAGE%
-
-import java.util
-
-import amadeus.SparkTest
-import amadeus.ti.data.model._
-import org.apache.spark.{SparkConf, SparkContext}
-import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers}
-
-class %TESTCLASS% extends FunSuite with SparkTest with Matchers {
-  describe (\"%IMPLPACKAGE%.%IMPLCLASS%\") {
-    it(\"should have a test!\") {
-      assert(1 === 0)
-    }
-  }
-}
-")
-
 (setq ensime-startup-snapshot-notification nil)
-
-(defun ensime-goto-test--is-test-dir-amadeus (dir)
-  (let ((case-fold-search nil))
-    (or
-     (string-match-p "src/test/scala/$" dir)
-     (string-match-p "src/it/scala/$" dir)
-     (string-match-p "src/fun/scala/$" dir)
-     (string-match-p "src-test/$" dir)
-     (string-match-p "/tests?/$" dir))))
+(setq ensime-startup-notification nil)
 
 
-(defcustom ensime-goto-test-config-amadeus
-   '(:test-class-names-fn ensime-goto-test--test-class-names
-    :test-class-suffixes  ("Test" "Spec" "Specification" "Check")
-    :impl-class-name-fn ensime-goto-test--impl-class-name
-    :impl-to-test-dir-fn ensime-goto-test--impl-to-test-dir
-    :is-test-dir-fn ensime-goto-test--is-test-dir-amadeus
-    :test-template-fn ensime-goto-test--test-template-amadeus-spark)
-   "Configuration for amadeus projects "
-    :type 'plist
-    :group 'ensime-ui)
+;;(defcustom ensime-goto-test-config-amadeus
+;;   '(:test-class-names-fn ensime-goto-test--test-class-names
+;;    :test-class-suffixes  ("Test" "Spec" "Specification" "Check")
+;;    :impl-class-name-fn ensime-goto-test--impl-class-name
+;;    :impl-to-test-dir-fn ensime-goto-test--impl-to-test-dir
+;;    :is-test-dir-fn ensime-goto-test--is-test-dir-amadeus
+;;    :test-template-fn ensime-goto-test--test-template-amadeus-spark)
+;;   "Configuration for amadeus projects "
+;;    :type 'plist
+;;    :group 'ensime-ui)

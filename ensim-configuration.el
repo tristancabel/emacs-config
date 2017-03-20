@@ -1,7 +1,22 @@
 
 ;;(ensime-mode +1)
+
+
+(use-package ensime
+  :ensure t
+  :pin melpa-stable)
+
+
 ;; helm integration with ensime
 (setq ensime-use-helm t)
+
+;; For complex scala files
+(setq max-lisp-eval-depth 50000)
+(setq max-specpdl-size 5000)
+
+;; disable startup messages
+(setq ensime-startup-snapshot-notification nil)
+(setq ensime-startup-notification nil)
 
 ;; SBT
 ;;
@@ -49,10 +64,6 @@
 ;;debuggingOff — Remove debugging flags from all forked JVM processes.
 
 ;; 2 start ensime M-x ensime
-
-(setq ensime-startup-snapshot-notification nil)
-(setq ensime-startup-notification nil)
-
 
 ;;(defcustom ensime-goto-test-config-amadeus
 ;;   '(:test-class-names-fn ensime-goto-test--test-class-names

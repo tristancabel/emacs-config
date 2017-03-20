@@ -12,6 +12,8 @@
 (require 'package) 
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
 
 (require 'cl)
 (require 'cl-lib)
@@ -27,7 +29,7 @@
 ;; company-emacs-eclim -> company for java
 ;; company-web -> company for web development
 ;; dash -> A modern list api for Emacs. No 'cl required.
-;; ensime -> scala dev environment
+;; ensime -> scala dev environment  --> in ensime-configuration.el
 ;; flycheck -> syntax checker
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
@@ -46,11 +48,10 @@
 (setq url-http-attempt-keepalives nil)
 
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
-                             beacon rich-minority  undo-tree use-package
+                             beacon rich-minority undo-tree use-package
                              which-key helm-flycheck flycheck company
                              anaconda-mode company-anaconda company-web dash
-                             company-quickhelp smart-mode-line ensime
-                             cmake-mode markdown-mode js2-mode json-mode
+                             company-quickhelp smart-mode-line cmake-mode markdown-mode js2-mode json-mode
                              python-mode scala-mode yaml-mode ac-html)
   "A list of packages to ensure are installed at launch.")
 
@@ -154,7 +155,7 @@
 (global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-;; ensime set up
+;; ensime install and set up
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-file "~/.emacs.d/ensim-configuration.el")
 

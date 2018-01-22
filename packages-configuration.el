@@ -87,16 +87,26 @@
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
 
-(eval-after-load 'flycheck
-  '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
 
 
 ;; flycheck
 ;; ;;;;;;;;;;;;;;;;;;;
 (add-hook 'python-mode-hook #'global-flycheck-mode)
 
+(eval-after-load 'flycheck
+  '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
 
-;;projectile
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+(eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
+
+(add-hook          'c-mode-hook 'flycheck-mode)
+(add-hook        'c++-mode-hook 'flycheck-mode)
+(add-hook       'objc-mode-hook 'flycheck-mode)
+(add-hook     'python-mode-hook 'flycheck-mode)
+(add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
+(add-hook        'js2-mode-hook 'flycheck-mode);;projectile
 ;; ;;;;;;;;;;;;;;;;;;;;
 ;; extra prefix for projectile
 ;;(define-key map (kbd "s-p") 'projectile-command-map)
@@ -113,6 +123,8 @@
 (require 'company)
 (global-company-mode t)
 
+(add-hook 'after-init-hook 'global-company-mode)
+
 (setq company-idle-delay 0.2)
 (setq company-minimum-prefix-length 1)
 
@@ -121,59 +133,69 @@
       '((company-files          ; files & directory
          company-keywords       ; keywords
          company-capf
+         company-cmake
+         company-c-headers
          company-yasnippet
          company-semantic
+         company-irony
+         company-anaconda
+         company-lsp
          )
         (company-abbrev company-dabbrev)
         ))
 
+(add-hook          'c-mode-hook  'company-mode)
+(add-hook        'c++-mode-hook  'company-mode)
+(add-hook 'emacs-lisp-mode-hook  'company-mode)
+(add-hook      'cmake-mode-hook  'company-mode)
+(add-hook       'html-mode-hook  'company-mode)
+(add-hook        'qml-mode-hook  'company-mode)
+(add-hook        'js2-mode-hook  'company-mode)
+(add-hook     'python-mode-hook  'company-mode)
+(add-hook     'python-mode-hook 'anaconda-mode)
+
+
+
+
+
 ;; python: company-anaconda
-(add-hook 'python-mode-hook 'anaconda-mode)
-(add-hook 'python-mode-hook
-          (lambda ()
-            (add-to-list (make-local-variable 'company-backends)
-                         'company-anaconda)))
+;;(add-hook 'python-mode-hook
+;;          (lambda ()
+;;            (add-to-list (make-local-variable 'company-backends)
+;;                         'company-anaconda)))
 
 ;; javascript
 (dolist (hook '(js-mode-hook
                 js2-mode-hook
                 js3-mode-hook
                 inferior-js-mode-hook
-                ))
-  (add-hook hook
-            (lambda ()
-              (tern-mode t)
-              (add-to-list (make-local-variable 'company-backends)
-                           'company-tern)
-              )))
+                )))
+;  (add-hook hook
+;            (lambda ()
+;              (tern-mode t)
+;              (add-to-list (make-local-variable 'company-backends)
+;                           'company-tern)
+;              )))
 
+;; c/ c++
 
-;; web
-;(add-hook 'python-mode-hook
-;          (lambda ()
-;            (add-to-list (make-local-variable 'company-backends)
-;                         'company-web)))
+;;irony 
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-;; c 
-(dolist (hook '(c-mode-hook
-                c++-mode-hook
-                cmake-mode-hook
-                ))
-  (add-hook hook
-            (lambda ()
-              (tern-mode t)
-              (add-to-list (make-local-variable 'company-backends)
-                           'company-c)
+;(dolist (hook '(c-mode-hook
+;                c++-mode-hook
+;                cmake-mode-hook
+;                ))
+;  (add-hook hook
+;            (lambda ()
+;              (tern-mode t)
+;              (add-to-list (make-local-variable 'company-backends)
+;                           'company-c)
 ;              (add-to-list (make-local-variable 'company-backends)
 ;                           'company-c++)
-              )))
-
-;; company for java 
-;;(require ‘company-emacs-eclim)
-;;(company-emacs-eclim-setup)
-;;(setq company-emacs-eclim-ignore-case t)
-
-;(add-hook      'scala-mode-hook 'company-mode)
+;              )))
 
 ;; company colors
  (require 'color)

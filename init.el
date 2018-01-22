@@ -2,7 +2,7 @@
 
 ;; set user name and email address
 (setq user-full-name "Tristan Cabel")
-(setq user-mail-address "tristan.cabel@amadeus.com")
+(setq user-mail-address "tristan.cabel@inria.fr")
 
 ;;; uncomment this line to disable loading of "default.el" at startup
 (setq inhibit-default-init t)
@@ -22,15 +22,18 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; get and install required packages
 ;;
-;; anaconda-mode
+;; anaconda-mode -> python mode 
 ;; beacon -> highlight cursor after window moves
 ;; company -> Company is a modular in-buffer completion mechanism
 ;; company-anaconda
 ;; company-emacs-eclim -> company for java
+;; company-irony -> company for c++
 ;; company-web -> company for web development
 ;; dash -> A modern list api for Emacs. No 'cl required.
 ;; ensime -> scala dev environment  --> in ensime-configuration.el
 ;; flycheck -> syntax checker
+;; flycheck-irony -> flycheck for irony ( C/C++)
+;; irony -> C/C++ minor mode => it requires clang
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
 ;; helm-projectile -> Helm UI for Projectile
@@ -51,8 +54,9 @@
                              beacon rich-minority undo-tree use-package
                              which-key helm-flycheck flycheck company
                              anaconda-mode company-anaconda company-web dash
+                             irony company-irony flycheck-irony company-c-headers
                              company-quickhelp smart-mode-line cmake-mode markdown-mode js2-mode json-mode
-                             python-mode scala-mode yaml-mode ac-html)
+                             scala-mode yaml-mode ac-html)
   "A list of packages to ensure are installed at launch.")
 
 (defun init-packages-installed-p ()

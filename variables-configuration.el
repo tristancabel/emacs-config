@@ -6,7 +6,8 @@
 ;; enable visual feedback on selections
 (setq transient-mark-mode t)
 
-(setq c-default-style "linux" c-basic-offset 2)
+(setq-default c-basic-offset 4)
+(setq-default c++-basic-offset 4)
 
 ;; always replace tabs with spaces
 (setq-default indent-tabs-mode nil)

@@ -52,6 +52,9 @@
 
 (setq helm-candidate-number-limit 100)
 
+(setq helm-mini-default-sources '(helm-source-buffers-list
+                                  helm-source-recentf))
+
 ;; From https://gist.github.com/antifuchs/9238468
 (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
       helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly.
@@ -64,7 +67,6 @@
       helm-display-header-line nil
       )
 
-(global-set-key(kbd "C-c h") 'helm-mini)
 (global-set-key(kbd "C-h a") 'helm-apropos)
 (global-set-key(kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key(kbd "C-x b") 'helm-mini)

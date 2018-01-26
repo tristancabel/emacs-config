@@ -33,7 +33,7 @@
 ;; ensime -> scala dev environment  --> in ensime-configuration.el
 ;; flycheck -> syntax checker
 ;; flycheck-irony -> flycheck for irony ( C/C++)
-;; irony -> C/C++ minor mode => it requires clang
+;; irony -> C/C++ minor mode => it requires clang TODO replace by lsp + cquery
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
 ;; helm-projectile -> Helm UI for Projectile

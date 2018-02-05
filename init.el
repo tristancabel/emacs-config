@@ -19,6 +19,13 @@
 (require 'cl-lib)
 (package-initialize) 
 
+
+;; Dependencies
+;; libatomic
+;; clang
+;; cquery
+
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; get and install required packages
 ;;
@@ -26,14 +33,21 @@
 ;; beacon -> highlight cursor after window moves
 ;; company -> Company is a modular in-buffer completion mechanism
 ;; company-anaconda
-;; company-emacs-eclim -> company for java
-;; company-irony -> company for c++
+;;; company-emacs-eclim -> company for java
+;;; company-irony -> company for c++
 ;; company-web -> company for web development
 ;; dash -> A modern list api for Emacs. No 'cl required.
 ;; ensime -> scala dev environment  --> in ensime-configuration.el
 ;; flycheck -> syntax checker
 ;; flycheck-irony -> flycheck for irony ( C/C++)
-;; irony -> C/C++ minor mode => it requires clang TODO replace by lsp + cquery
+;;; irony -> C/C++ minor mode => it requires clang TODO replace by lsp + cquery
+;; git-gutter -> to have + = on line changes by git
+;; cquery -> it requires https://github.com/cquery-project/cquery/releases
+;; company-lsp -> company completion backend for lsp-mode
+;; lsp-mode -> minor mode for interacting with language servers
+;; lsp-ui
+;; lsp-python -> python support for lsp-mode
+;; lsp-flycheck -> lsp for flycheck
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
 ;; helm-projectile -> Helm UI for Projectile
@@ -50,11 +64,15 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 (setq url-http-attempt-keepalives nil)
 
+
+;;; deprecated
+;;; irony company-irony flycheck-irony company-c-headers
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
                              beacon rich-minority undo-tree use-package
                              which-key helm-flycheck flycheck company
                              anaconda-mode company-anaconda company-web dash
-                             irony company-irony flycheck-irony company-c-headers
+                             lsp-mode company-lsp lsp-python lsp-flycheck lsp-ui
+                             cquery git-gutter
                              company-quickhelp smart-mode-line cmake-mode markdown-mode js2-mode json-mode
                              scala-mode yaml-mode ac-html)
   "A list of packages to ensure are installed at launch.")
@@ -170,7 +188,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html))))
+    (git-gutter company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

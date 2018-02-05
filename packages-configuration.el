@@ -35,7 +35,7 @@
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;; Highlight git lines change
-;;(global-git-gutter-mode +1)
+(global-git-gutter-mode +1)
 
 ;; ediff - don't start another frame
 (require 'ediff)
@@ -90,6 +90,25 @@
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
 
 
+;; lsp
+;; ;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+
+;; CQuery setup
+;; ;;;;;;;;;;;;;;;;;;;
+
+(setq cquery-executable "~/Lib/cquery/bin/cquery")
+
+(setq cquery-sem-highlight-method 'overlay)
+(setq cquery-sem-highlight-method 'font-lock)
+(cquery-use-default-rainbow-sem-highlight)
+
+(add-hook    'c-mode-hook 'lsp-cquery-enable)
+(add-hook  'c++-mode-hook 'lsp-cquery-enable)
+(add-hook 'objc-mode-hook 'lsp-cquery-enable)
+
 
 ;; flycheck
 ;; ;;;;;;;;;;;;;;;;;;;
@@ -98,20 +117,19 @@
 (eval-after-load 'flycheck
   '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
 
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-
-(eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
+;;; (eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
 
 (add-hook          'c-mode-hook 'flycheck-mode)
 (add-hook        'c++-mode-hook 'flycheck-mode)
 (add-hook       'objc-mode-hook 'flycheck-mode)
 (add-hook     'python-mode-hook 'flycheck-mode)
 (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
-(add-hook        'js2-mode-hook 'flycheck-mode);;projectile
+(add-hook        'js2-mode-hook 'flycheck-mode)
+
+
+;;projectile
 ;; ;;;;;;;;;;;;;;;;;;;;
 ;; extra prefix for projectile
-;;(define-key map (kbd "s-p") 'projectile-command-map)
 
 ;;helm-projectile
 (projectile-global-mode)
@@ -136,15 +154,16 @@
          company-keywords       ; keywords
          company-capf
          company-cmake
-         company-c-headers
+         company-lsp
          company-yasnippet
          company-semantic
-         company-irony
          company-anaconda
-         company-lsp
          )
         (company-abbrev company-dabbrev)
         ))
+
+;;;          company-c-headers
+;;;         company-irony
 
 (add-hook          'c-mode-hook  'company-mode)
 (add-hook        'c++-mode-hook  'company-mode)
@@ -181,10 +200,10 @@
 
 ;; c/ c++
 
-;;irony 
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+;;; irony 
+;;; (add-hook 'c++-mode-hook 'irony-mode)
+;;; (add-hook 'c-mode-hook 'irony-mode)
+;;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 ;(dolist (hook '(c-mode-hook
 ;                c++-mode-hook

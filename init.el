@@ -22,20 +22,7 @@
 (require 'cl-lib)
 (package-initialize)
 
-;; Dependencies
-;; libatomic
-;; clang
-;; ncurses-compat-lib ( for cquery)
-
-;; build cquery
-;$ git clone https://github.com/jacobdufault/cquery --single-branch --depth=1
-;$ cd cquery
-;# If syncing, only the following steps are needed.
-;$ git submodule update --init
-;$ ./waf configure   # --variant=debug if you want to report issues.
-;$ ./waf build       # --variant=debug . Yes, it is duplicated here
-;
-;The executable is at build/release/bin/cquery.
+;; Dependencies -> see the readme
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; get and install required packages
@@ -70,9 +57,6 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 (setq url-http-attempt-keepalives nil)
 
-
-;;; deprecated
-;;; irony company-irony flycheck-irony company-c-headers
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
                              beacon rich-minority undo-tree use-package
                              which-key helm-flycheck flycheck company

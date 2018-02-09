@@ -104,7 +104,7 @@
 
 (setq cquery-sem-highlight-method 'overlay)
 (setq cquery-sem-highlight-method 'font-lock)
-;(cquery-use-default-rainbow-sem-highlight)
+(cquery-use-default-rainbow-sem-highlight)
 
 (add-hook    'c-mode-hook 'lsp-cquery-enable)
 (add-hook  'c++-mode-hook 'lsp-cquery-enable)
@@ -151,7 +151,7 @@
 (setq company-idle-delay 0.2)
 (setq company-minimum-prefix-length 1)
 
-;;(setq company-dabbrev-downcase nil)
+(setq company-dabbrev-downcase nil)
 
 ;; set default `company-backends'
 (setq company-backends
@@ -164,13 +164,13 @@
         (company-abbrev company-dabbrev)
         ))
 
-;;company-dabbrev
 (add-hook 'c++-mode-hook
             (lambda ()
               (set (make-local-variable 'company-backends) '((
                                                               company-keywords
                                                               company-lsp
                                                               company-files
+                                                              company-dabbrev
                                                               )))))
 
 (add-hook 'cmake-mode-hook

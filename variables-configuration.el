@@ -49,6 +49,12 @@
 ;; save desktop mode
 (desktop-save-mode 1)
 
+;; Font size
+;; ;;;;;;;;;;;;;;;;;;;;
+(setq text-scale-mode-step 1.1)
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+
 ;; save disk space ?
 ;;(setq delete-old-versions -1)
 ;;(setq version-control t)

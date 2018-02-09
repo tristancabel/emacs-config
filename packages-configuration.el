@@ -18,11 +18,6 @@
 ;; ;;;;;;;;;;;;;;;;;;;;
 (which-key-mode)
 
-;; Font size
-;; ;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-+") 'zoom-frm-in)
-(global-set-key (kbd "C--") 'zoom-frm-out)
-
 ;; magit
 ;; ;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-c v s") 'magit-status)
@@ -89,25 +84,35 @@
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
 
-
 ;; lsp
 ;; ;;;;;;;;;;;;;;;;;;;
 
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(with-eval-after-load 'lsp-mode
+    (require 'lsp-flycheck))
 
+;; TODO
+;; lsp-ui
+;; ;;;;;;;;;;;;;;;;;;;
+;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+;(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
 
 ;; CQuery setup
 ;; ;;;;;;;;;;;;;;;;;;;
 
-(setq cquery-executable "~/Lib/cquery/bin/cquery")
+(setq cquery-executable "~/Lib/cquery/build/release/bin/cquery")
 
 (setq cquery-sem-highlight-method 'overlay)
 (setq cquery-sem-highlight-method 'font-lock)
-(cquery-use-default-rainbow-sem-highlight)
+;(cquery-use-default-rainbow-sem-highlight)
 
 (add-hook    'c-mode-hook 'lsp-cquery-enable)
 (add-hook  'c++-mode-hook 'lsp-cquery-enable)
 (add-hook 'objc-mode-hook 'lsp-cquery-enable)
+
+;;% mkdir build
+;;% (cd build; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=YES ..)
+;;% ln -s build/compile_commands.json
 
 
 ;; flycheck
@@ -116,8 +121,6 @@
 
 (eval-after-load 'flycheck
   '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
-
-;;; (eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
 
 (add-hook          'c-mode-hook 'flycheck-mode)
 (add-hook        'c++-mode-hook 'flycheck-mode)
@@ -148,22 +151,38 @@
 (setq company-idle-delay 0.2)
 (setq company-minimum-prefix-length 1)
 
+;;(setq company-dabbrev-downcase nil)
+
 ;; set default `company-backends'
 (setq company-backends
       '((company-files          ; files & directory
          company-keywords       ; keywords
-         company-capf
-         company-cmake
-         company-lsp
-         company-yasnippet
+         company-capf           ; completion-at-point-functions backend
+         company-yasnippet      ; completion backend for Yasnippet
          company-semantic
-         company-anaconda
          )
         (company-abbrev company-dabbrev)
         ))
 
-;;;          company-c-headers
-;;;         company-irony
+;;company-dabbrev
+(add-hook 'c++-mode-hook
+            (lambda ()
+              (set (make-local-variable 'company-backends) '((
+                                                              company-keywords
+                                                              company-lsp
+                                                              company-files
+                                                              )))))
+
+(add-hook 'cmake-mode-hook
+            (lambda ()
+              (set (make-local-variable 'company-backends) '((
+                                                              company-keywords
+                                                              company-cmake
+                                                              company-files)))))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-to-list (make-local-variable 'company-backends) 'company-anaconda)))
 
 (add-hook          'c-mode-hook  'company-mode)
 (add-hook        'c++-mode-hook  'company-mode)
@@ -176,14 +195,6 @@
 (add-hook     'python-mode-hook 'anaconda-mode)
 
 
-
-
-
-;; python: company-anaconda
-;;(add-hook 'python-mode-hook
-;;          (lambda ()
-;;            (add-to-list (make-local-variable 'company-backends)
-;;                         'company-anaconda)))
 
 ;; javascript
 (dolist (hook '(js-mode-hook
@@ -198,25 +209,6 @@
 ;                           'company-tern)
 ;              )))
 
-;; c/ c++
-
-;;; irony 
-;;; (add-hook 'c++-mode-hook 'irony-mode)
-;;; (add-hook 'c-mode-hook 'irony-mode)
-;;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
-;(dolist (hook '(c-mode-hook
-;                c++-mode-hook
-;                cmake-mode-hook
-;                ))
-;  (add-hook hook
-;            (lambda ()
-;              (tern-mode t)
-;              (add-to-list (make-local-variable 'company-backends)
-;                           'company-c)
-;              (add-to-list (make-local-variable 'company-backends)
-;                           'company-c++)
-;              )))
 
 ;; company colors
  (require 'color)

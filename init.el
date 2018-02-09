@@ -1,5 +1,8 @@
-;; .emacs
+;;; package --- Summary
+;;; Commentary:
+;;; that's my Emacs
 
+;;; Code:
 ;; set user name and email address
 (setq user-full-name "Tristan Cabel")
 (setq user-mail-address "tristan.cabel@inria.fr")
@@ -9,7 +12,7 @@
 
 (load-theme 'tango-dark)
 
-(require 'package) 
+(require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives
@@ -17,39 +20,44 @@
 
 (require 'cl)
 (require 'cl-lib)
-(package-initialize) 
-
+(package-initialize)
 
 ;; Dependencies
 ;; libatomic
 ;; clang
-;; cquery
+;; ncurses-compat-lib ( for cquery)
 
+;; build cquery
+;$ git clone https://github.com/jacobdufault/cquery --single-branch --depth=1
+;$ cd cquery
+;# If syncing, only the following steps are needed.
+;$ git submodule update --init
+;$ ./waf configure   # --variant=debug if you want to report issues.
+;$ ./waf build       # --variant=debug . Yes, it is duplicated here
+;
+;The executable is at build/release/bin/cquery.
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; get and install required packages
 ;;
-;; anaconda-mode -> python mode 
+;; anaconda-mode -> python mode
 ;; beacon -> highlight cursor after window moves
 ;; company -> Company is a modular in-buffer completion mechanism
 ;; company-anaconda
-;;; company-emacs-eclim -> company for java
-;;; company-irony -> company for c++
 ;; company-web -> company for web development
 ;; dash -> A modern list api for Emacs. No 'cl required.
 ;; ensime -> scala dev environment  --> in ensime-configuration.el
 ;; flycheck -> syntax checker
 ;; flycheck-irony -> flycheck for irony ( C/C++)
-;;; irony -> C/C++ minor mode => it requires clang TODO replace by lsp + cquery
 ;; git-gutter -> to have + = on line changes by git
 ;; cquery -> it requires https://github.com/cquery-project/cquery/releases
 ;; company-lsp -> company completion backend for lsp-mode
 ;; lsp-mode -> minor mode for interacting with language servers
 ;; lsp-ui
 ;; lsp-python -> python support for lsp-mode
-;; lsp-flycheck -> lsp for flycheck
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
+;; helm-dash -> helm integration with dash
 ;; helm-projectile -> Helm UI for Projectile
 ;; helm-flycheck -> Helm UI for flycheck
 ;; magit -> git mode
@@ -59,8 +67,6 @@
 ;; which-key -> which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command
 ;;
 ;;
-;;   dash -> A modern list api for Emacs. 
-;;   helm-dash -> helm integration with dash
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 (setq url-http-attempt-keepalives nil)
 
@@ -70,8 +76,8 @@
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
                              beacon rich-minority undo-tree use-package
                              which-key helm-flycheck flycheck company
-                             anaconda-mode company-anaconda company-web dash
-                             lsp-mode company-lsp lsp-python lsp-flycheck lsp-ui
+                             anaconda-mode company-anaconda company-web dash helm-dash
+                             lsp-mode company-lsp lsp-python lsp-ui
                              cquery git-gutter
                              company-quickhelp smart-mode-line cmake-mode markdown-mode js2-mode json-mode
                              scala-mode yaml-mode ac-html)
@@ -179,16 +185,17 @@
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;; ensime install and set up
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-file "~/.emacs.d/ensim-configuration.el")
+;;(load-file "~/.emacs.d/ensim-configuration.el")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(global-git-gutter-mode t)
  '(package-selected-packages
    (quote
-    (git-gutter company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html))))
+    (ensime company-quickhelp company-c-headers flycheck-irony company-irony irony company-web company-lsp cquery lsp-ui lsp-mode git-gutter company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

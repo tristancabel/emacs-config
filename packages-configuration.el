@@ -100,6 +100,7 @@
 ;; CQuery setup
 ;; ;;;;;;;;;;;;;;;;;;;
 
+(require 'cquery)
 (setq cquery-executable "~/Lib/cquery/build/release/bin/cquery")
 
 (setq cquery-sem-highlight-method 'overlay)

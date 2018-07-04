@@ -24,7 +24,7 @@
 
 ;; Dependencies -> see the readme
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; get and install required packages
 ;;
 ;; anaconda-mode -> python mode
@@ -35,15 +35,15 @@
 ;; dash -> A modern list api for Emacs. No 'cl required.
 ;; ensime -> scala dev environment  --> in ensime-configuration.el
 ;; flycheck -> syntax checker
-;; flycheck-irony -> flycheck for irony ( C/C++)
 ;; git-gutter -> to have + = on line changes by git
 ;; cquery -> it requires https://github.com/cquery-project/cquery/releases
 ;; company-lsp -> company completion backend for lsp-mode
 ;; lsp-mode -> minor mode for interacting with language servers
-;; lsp-ui
-;; lsp-python -> python support for lsp-mode
+;; lsp-ui -> higher level UI modules of lsp-mode, like flycheck support and code lenses
+;;; lsp-python -> python support for lsp-mode
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
+;; helm-ag -> helm with ag for search
 ;; helm-dash -> helm integration with dash
 ;; helm-projectile -> Helm UI for Projectile
 ;; helm-flycheck -> Helm UI for flycheck
@@ -52,17 +52,18 @@
 ;; undo-tree -> undo and redo functions
 ;; use-package -> The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy.
 ;; which-key -> which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command
+;; neotree -> tree navigation mode (activated on F8)
+;; rainbow-mode -> colorize color names
 ;;
-;;
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq url-http-attempt-keepalives nil)
 
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
                              beacon rich-minority undo-tree use-package
-                             which-key helm-flycheck flycheck company
+                             which-key helm-flycheck helm-ag flycheck company
                              anaconda-mode company-anaconda company-web dash helm-dash
-                             lsp-mode company-lsp lsp-python lsp-ui
-                             cquery git-gutter
+                             lsp-mode company-lsp lsp-ui
+                             cquery git-gutter neotree rainbow-mode
                              company-quickhelp smart-mode-line cmake-mode markdown-mode js2-mode json-mode
                              scala-mode yaml-mode ac-html)
   "A list of packages to ensure are installed at launch.")
@@ -92,7 +93,7 @@
 
 (provide 'init-packages)
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; variable configurations
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-file "~/.emacs.d/variables-configuration.el")
@@ -166,7 +167,7 @@
 
 (global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ensime install and set up
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;(load-file "~/.emacs.d/ensim-configuration.el")

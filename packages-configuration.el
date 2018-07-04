@@ -4,6 +4,10 @@
 (setq sml/no-confirm-load-theme t)
 (sml/setup)
 
+;; neotree
+;; ;;;;;;;;;;;;;;;;;;;;
+(global-set-key [f8] 'neotree-toggle)
+
 ;; undo-tree
 ;; ;;;;;;;;;;;;;;;;;;;;
 (global-undo-tree-mode)
@@ -86,14 +90,15 @@
 
 ;; lsp
 ;; ;;;;;;;;;;;;;;;;;;;
+(require 'lsp-mode)
 
-(with-eval-after-load 'lsp-mode
-    (require 'lsp-flycheck))
+(global-set-key(kbd "C-c l r") 'lsp-rename)
 
-;; TODO
 ;; lsp-ui
 ;; ;;;;;;;;;;;;;;;;;;;
-;(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(require 'lsp-ui)
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
 ;(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
 ;(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
 
@@ -101,7 +106,7 @@
 ;; ;;;;;;;;;;;;;;;;;;;
 
 (require 'cquery)
-(setq cquery-executable "~/Lib/cquery/build/release/bin/cquery")
+(setq cquery-executable "~/Tools/cquery/build/release/bin/cquery")
 
 (setq cquery-sem-highlight-method 'overlay)
 (setq cquery-sem-highlight-method 'font-lock)
@@ -116,9 +121,14 @@
 ;;% ln -s build/compile_commands.json
 
 
+;; anaconda mode for python
+;; ;;;;;;;;;;;;;;;;;;;
+(add-hook 'python-mode-hook 'anaconda-mode)
+
+;; (add-to-list 'python-shell-extra-pythonpaths "/usr/lib64/python3.6/site-packages/")
+
 ;; flycheck
 ;; ;;;;;;;;;;;;;;;;;;;
-(add-hook 'python-mode-hook #'global-flycheck-mode)
 
 (eval-after-load 'flycheck
   '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
@@ -129,7 +139,7 @@
 (add-hook     'python-mode-hook 'flycheck-mode)
 (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
 (add-hook        'js2-mode-hook 'flycheck-mode)
-
+(add-hook     'python-mode-hook 'flycheck-mode)
 
 ;;projectile
 ;; ;;;;;;;;;;;;;;;;;;;;
@@ -166,24 +176,29 @@
         ))
 
 (add-hook 'c++-mode-hook
-            (lambda ()
-              (set (make-local-variable 'company-backends) '((
-                                                              company-keywords
-                                                              company-lsp
-                                                              company-files
-                                                              company-dabbrev
-                                                              )))))
+          (lambda ()
+            (set (make-local-variable 'company-backends) '((
+                                                            company-lsp
+                                                            company-keywords
+                                                            company-files
+                                                            company-dabbrev
+                                                            )))))
 
 (add-hook 'cmake-mode-hook
-            (lambda ()
-              (set (make-local-variable 'company-backends) '((
-                                                              company-keywords
-                                                              company-cmake
-                                                              company-files)))))
+          (lambda ()
+            (set (make-local-variable 'company-backends) '((
+                                                            company-keywords
+                                                            company-cmake
+                                                            company-files)))))
 
 (add-hook 'python-mode-hook
           (lambda ()
-            (add-to-list (make-local-variable 'company-backends) 'company-anaconda)))
+            (set (make-local-variable 'company-backends) '((
+                                                            company-anaconda
+                                                            company-keywords
+                                                            company-files
+                                                            company-dabbrev
+                                                            )))))
 
 (add-hook          'c-mode-hook  'company-mode)
 (add-hook        'c++-mode-hook  'company-mode)
@@ -193,9 +208,6 @@
 (add-hook        'qml-mode-hook  'company-mode)
 (add-hook        'js2-mode-hook  'company-mode)
 (add-hook     'python-mode-hook  'company-mode)
-(add-hook     'python-mode-hook 'anaconda-mode)
-
-
 
 ;; javascript
 (dolist (hook '(js-mode-hook

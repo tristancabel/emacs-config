@@ -1,4 +1,3 @@
-
 ;; smart-mode-line
 ;; ;;;;;;;;;;;;;;;;;;;;
 (setq sml/no-confirm-load-theme t)
@@ -88,6 +87,11 @@
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
 
+
+;; find-other-file
+;; ;;;;;;;;;;;;;;;;;;;
+(global-set-key (kbd "C-c a") 'ff-find-other-file)
+
 ;; lsp
 ;; ;;;;;;;;;;;;;;;;;;;
 (require 'lsp-mode)
@@ -99,8 +103,8 @@
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
-;(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-;(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
 
 ;; CQuery setup
 ;; ;;;;;;;;;;;;;;;;;;;
@@ -144,12 +148,15 @@
 ;;projectile
 ;; ;;;;;;;;;;;;;;;;;;;;
 ;; extra prefix for projectile
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
 
 ;;helm-projectile
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
-(global-set-key(kbd "C-c p h") 'helm-projectile)
+(global-set-key(kbd "C-c h") 'helm-projectile)
 
 ;; Completion hooks
 ;; ;;;;;;;;;;;;;;;;;;;;
@@ -225,7 +232,7 @@
 
 ;; company colors
  (require 'color)
-  
+
   (let ((bg (face-attribute 'default :background)))
     (custom-set-faces
      `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))

@@ -102,6 +102,8 @@
 ;; key bindings
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
 ; kill lines backward
 (global-set-key (kbd "C-<backspace>") (lambda ()
                                         (interactive)
@@ -180,7 +182,7 @@
  '(global-git-gutter-mode t)
  '(package-selected-packages
    (quote
-    (ensime company-quickhelp company-c-headers flycheck-irony company-irony irony company-web company-lsp cquery lsp-ui lsp-mode git-gutter company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html))))
+    (erlang ensime company-quickhelp company-c-headers flycheck-irony company-irony irony company-web company-lsp cquery lsp-ui lsp-mode git-gutter company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

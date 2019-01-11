@@ -41,13 +41,6 @@
 
 ;;helm
 ;; ;;;;;;;;;;;;;;;;;;;;
-;;(setq helm-dash-min-length 3)
-;;helm-dash
-;;(defun dash-install-dset (docset)
-;;  (unless (file-exists-p (
-;;(setq helm-dash-docsets-path (format "%s/.emacs.d/docsets" (getenv "HOME")))
-;;(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-
 (setq helm-candidate-number-limit 100)
 
 (setq helm-mini-default-sources '(helm-source-buffers-list
@@ -92,58 +85,30 @@
 ;; ;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-c a") 'ff-find-other-file)
 
-;; lsp
-;; ;;;;;;;;;;;;;;;;;;;
-(require 'lsp-mode)
-
-(global-set-key(kbd "C-c l r") 'lsp-rename)
-
-;; lsp-ui
-;; ;;;;;;;;;;;;;;;;;;;
-(require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-
-(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-
-;; CQuery setup
+;; eglot
 ;; ;;;;;;;;;;;;;;;;;;;
 
-(require 'cquery)
-(setq cquery-executable "~/Tools/cquery/build/release/bin/cquery")
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
+(global-set-key(kbd "C-c l r") 'eglot-rename)
 
-(setq cquery-sem-highlight-method 'overlay)
-(setq cquery-sem-highlight-method 'font-lock)
-(cquery-use-default-rainbow-sem-highlight)
+(setq company-transformers nil)
 
-(add-hook    'c-mode-hook 'lsp-cquery-enable)
-(add-hook  'c++-mode-hook 'lsp-cquery-enable)
-(add-hook 'objc-mode-hook 'lsp-cquery-enable)
-
-;;% mkdir build
-;;% (cd build; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=YES ..)
-;;% ln -s build/compile_commands.json
-
-
-;; anaconda mode for python
-;; ;;;;;;;;;;;;;;;;;;;
-(add-hook 'python-mode-hook 'anaconda-mode)
-
-;; (add-to-list 'python-shell-extra-pythonpaths "/usr/lib64/python3.6/site-packages/")
-
-;; flycheck
+;; ccls
 ;; ;;;;;;;;;;;;;;;;;;;
 
-(eval-after-load 'flycheck
-  '(define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
+;;(require 'ccls)
+;;(add-to-list 'eglot-server-programs
+ ;;            '((c++ mode c-mode) . ("/home/trcabel/Tools/ccls/build/Release/ccls")))
+;(setq ccls-executable "/home/trcabel/Tools/ccls/build/Release/ccls")
 
-(add-hook          'c-mode-hook 'flycheck-mode)
-(add-hook        'c++-mode-hook 'flycheck-mode)
-(add-hook       'objc-mode-hook 'flycheck-mode)
-(add-hook     'python-mode-hook 'flycheck-mode)
-(add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
-(add-hook        'js2-mode-hook 'flycheck-mode)
-(add-hook     'python-mode-hook 'flycheck-mode)
+(defun projectile-project-find-function (dir)
+  (let* ((root (projectile-project-root dir)))
+    (and root (cons 'transient root))))
+
+(with-eval-after-load 'project
+  (add-to-list 'project-find-functions 'projectile-project-find-function))
 
 ;;projectile
 ;; ;;;;;;;;;;;;;;;;;;;;
@@ -171,64 +136,18 @@
 
 (setq company-dabbrev-downcase nil)
 
-;; set default `company-backends'
-(setq company-backends
-      '((company-files          ; files & directory
-         company-keywords       ; keywords
-         company-capf           ; completion-at-point-functions backend
-         company-yasnippet      ; completion backend for Yasnippet
-         company-semantic
-         )
-        (company-abbrev company-dabbrev)
-        ))
-
 (add-hook 'c++-mode-hook
           (lambda ()
             (set (make-local-variable 'company-backends) '((
-                                                            company-lsp
-                                                            company-keywords
+                                                            company-capf
                                                             company-files
-                                                            company-dabbrev
                                                             )))))
 
-(add-hook 'cmake-mode-hook
-          (lambda ()
-            (set (make-local-variable 'company-backends) '((
-                                                            company-keywords
-                                                            company-cmake
-                                                            company-files)))))
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            (set (make-local-variable 'company-backends) '((
-                                                            company-anaconda
-                                                            company-keywords
-                                                            company-files
-                                                            company-dabbrev
-                                                            )))))
-
-(add-hook          'c-mode-hook  'company-mode)
-(add-hook        'c++-mode-hook  'company-mode)
 (add-hook 'emacs-lisp-mode-hook  'company-mode)
 (add-hook      'cmake-mode-hook  'company-mode)
 (add-hook       'html-mode-hook  'company-mode)
 (add-hook        'qml-mode-hook  'company-mode)
 (add-hook        'js2-mode-hook  'company-mode)
-(add-hook     'python-mode-hook  'company-mode)
-
-;; javascript
-(dolist (hook '(js-mode-hook
-                js2-mode-hook
-                js3-mode-hook
-                inferior-js-mode-hook
-                )))
-;  (add-hook hook
-;            (lambda ()
-;              (tern-mode t)
-;              (add-to-list (make-local-variable 'company-backends)
-;                           'company-tern)
-;              )))
-
 
 ;; company colors
  (require 'color)

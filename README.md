@@ -7,19 +7,25 @@ The current dependencies are: *libatomic*, *clang*, *ncurses-compat-lib* (needed
 To install them on fedora do: `sudo dnf install libatomic clang clang-libs ncurses-compat-lib the_silver_searcher libasan libubsan`
 Then install CQuery
 
-## CQuery install
+for **pyls** do the following:
+```
+pip install 'python-language-server[all]'
+pip3 install 'python-language-server[all]'
+```
+
+## ccls install
 Do the following commands:
 
 ```
 cd ~/Tools
-git clone https://github.com/jacobdufault/cquery --single-branch --depth=1
-cd cquery
-git submodule update --init
-mkdir build
-ccmake -DASAN:BOOL=ON -DASSERT:BOOL=ON -DREPROC_SANITIZERS:BOOL=ON ..
+git clone --depth=1 --recursive https://github.com/MaskRay/ccls/
+cd ccls
+cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release
+cmake --build Release
 ```
 
-The executable will be at *build/release/bin/cquery*.
+The executable will be at *build/Release/ccls*, you shloud add it to your path in **~/.bashrc** file
+`export PATH="$PATH:/home/trcabel/Tools/ccls/build/Release/"`
 
 # Install
 To install this emacs config, create a symbolic link from `~.emacs.d` to this directory:

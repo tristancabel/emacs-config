@@ -24,6 +24,12 @@
 
 ;; Dependencies -> see the readme
 
+
+
+;; to test yas-snippet
+;; flymake required or included in eglot?
+
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; get and install required packages
 ;;
@@ -42,6 +48,7 @@
 ;; helm-projectile -> Helm UI for Projectile
 ;; helm-flycheck -> Helm UI for flycheck
 ;; magit -> git mode
+;; realgud -> better debugger
 ;; smart-mode-line -> line model
 ;; undo-tree -> undo and redo functions
 ;; use-package -> The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy.
@@ -56,7 +63,7 @@
                              beacon rich-minority undo-tree use-package
                              which-key helm-flycheck helm-ag flycheck company
                              company-web dash helm-dash
-                             ccls eglot
+                             ccls eglot realgud
                              git-gutter neotree rainbow-mode
                              company-quickhelp smart-mode-line cmake-mode markdown-mode js2-mode json-mode
                              scala-mode yaml-mode ac-html)
@@ -175,7 +182,7 @@
  '(global-git-gutter-mode t)
  '(package-selected-packages
    (quote
-    (eglot ccls erlang ensime company-quickhelp company-c-headers flycheck-irony company-irony irony company-web company-lsp cquery lsp-ui lsp-mode git-gutter company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html)))
+    (realgud eglot ccls erlang ensime company-quickhelp company-c-headers flycheck-irony company-irony irony company-web company-lsp cquery lsp-ui lsp-mode git-gutter company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html)))
  '(safe-local-variable-values
    (quote
     ((python-shell-interpreter . "/home/trcabel/miniconda3/envs/pose-residual/bin/python")

@@ -102,6 +102,7 @@
 ;;(add-to-list 'eglot-server-programs
  ;;            '((c++ mode c-mode) . ("/home/trcabel/Tools/ccls/build/Release/ccls")))
 ;(setq ccls-executable "/home/trcabel/Tools/ccls/build/Release/ccls")
+;;setq(ccls-initialization-options "--init='{\"compilationDatabaseDirectory\":\"build\"}'")
 
 (defun projectile-project-find-function (dir)
   (let* ((root (projectile-project-root dir)))
@@ -110,12 +111,19 @@
 (with-eval-after-load 'project
   (add-to-list 'project-find-functions 'projectile-project-find-function))
 
+;;--init='{"compilationDatabaseCommand":"/tmp/c/x"}'
+
 ;;projectile
 ;; ;;;;;;;;;;;;;;;;;;;;
 ;; extra prefix for projectile
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
+(projectile-register-project-type 'cmake '("CMakeLists.txt")
+                                  :compilation-dir "build"
+                                  :configure "cmake %s"
+                                  :compile "cmake --build ."
+                                  :test "ctest")
 
 ;;helm-projectile
 (projectile-global-mode)

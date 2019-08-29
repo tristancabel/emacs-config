@@ -122,8 +122,8 @@
 (projectile-register-project-type 'cmake '("CMakeLists.txt")
                                   :compilation-dir "build"
                                   :configure "cmake %s"
-                                  :compile "cmake --build ."
-                                  :test "ctest")
+                                  :compile "make -j"
+                                  :test "make test")
 
 ;;helm-projectile
 (projectile-global-mode)

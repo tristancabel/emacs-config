@@ -1,4 +1,3 @@
-
 ;; turn on font-lock mode
 (when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))
@@ -54,6 +53,15 @@
 (setq text-scale-mode-step 1.1)
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
+
+;; go to previous window
+;; ;;;;;;;;;;;;;;;;;;;;
+(defun myprevious-window ()
+    "go to previous window"
+    (interactive)
+    (other-window -1))
+
+(global-set-key (kbd "C-x p") 'myprevious-window)
 
 ;; save disk space ?
 ;;(setq delete-old-versions -1)

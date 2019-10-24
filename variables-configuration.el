@@ -13,6 +13,7 @@
 
 ;; set tab width to 4 for all buffers
 (setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
 
 ;; default to better frame titles
 (setq frame-title-format  (concat  "%b - emacs@" system-name))

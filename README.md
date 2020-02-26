@@ -13,6 +13,11 @@ pip install 'python-language-server[all]'
 pip3 install 'python-language-server[all]'
 ```
 
+to enable python debugging with **dap-mode**, do the folowwing:
+```
+pip install "ptvsd>=4.2"
+```
+
 ## ccls install
 Do the following commands:
 

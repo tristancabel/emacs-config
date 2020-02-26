@@ -36,11 +36,13 @@
 ;; beacon -> highlight cursor after window moves
 ;; company -> Company is a modular in-buffer completion mechanism
 ;; company-web -> company for web development
+;; company-lsp -> company for lsp (Language Server Protocol)
 ;; dash -> A modern list api for Emacs. No 'cl required.
 ;; flycheck -> syntax checker
 ;; git-gutter -> to have + = on line changes by git
 ;; ccls -> replace cquery. c++ front end for language server protocol (eglot)
-;; eglot -> Language Server Protocol back end
+;;;;; eglot -> Language Server Protocol back end
+;; lsp-mode
 ;; projectile -> project interaction library for Emacs.
 ;; helm -> Emacs incremental completion and selection narrowing framework
 ;; helm-ag -> helm with ag for search
@@ -48,7 +50,7 @@
 ;; helm-projectile -> Helm UI for Projectile
 ;; helm-flycheck -> Helm UI for flycheck
 ;; magit -> git mode
-;; realgud -> better debugger
+;;;;;; realgud -> better debugger
 ;; smart-mode-line -> line model
 ;; undo-tree -> undo and redo functions
 ;; use-package -> The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy.
@@ -62,8 +64,8 @@
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
                              beacon rich-minority undo-tree use-package
                              which-key helm-flycheck helm-ag flycheck company
-                             company-web dash helm-dash
-                             ccls eglot realgud
+                             company-web company-lsp dash helm-dash
+                             ccls lsp-mode
                              git-gutter neotree rainbow-mode
                              company-quickhelp smart-mode-line cmake-mode markdown-mode js2-mode json-mode
                              scala-mode yaml-mode ac-html)
@@ -181,16 +183,16 @@
  ;; If there is more than one, they won't work right.
  '(global-git-gutter-mode t)
  '(package-selected-packages
-   (quote
-    (realgud eglot ccls erlang ensime company-quickhelp company-c-headers flycheck-irony company-irony irony company-web company-lsp cquery lsp-ui lsp-mode git-gutter company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html)))
+        (quote
+         (rainbow-mode neotree helm-dash helm-ag ccls erlang ensime company-quickhelp company-c-headers flycheck-irony company-irony irony company-web company-lsp cquery lsp-ui lsp-mode git-gutter company-anaconda anaconda-mode helm-flycheck flycheck yaml-mode which-key use-package undo-tree smart-mode-line scala-mode python-mode markdown-mode magit json-mode js2-mode helm-projectile esqlite company cmake-mode beacon ac-html)))
  '(safe-local-variable-values
-   (quote
-    ((python-shell-interpreter . "/home/trcabel/miniconda3/envs/pose-residual/bin/python")
-     (eglot-server-programs
-      (python-mode "/home/trcabel/miniconda3/envs/pose-residual/bin/pyls"))
-     (python-shell-interpreter . "/home/trcabel/miniconda3/envs/sup-icp/bin/python")
-     (eglot-server-programs
-      (python-mode "/home/trcabel/miniconda3/envs/sup-icp/bin/pyls"))))))
+        (quote
+         ((python-shell-interpreter . "/home/trcabel/miniconda3/envs/pose-residual/bin/python")
+          (eglot-server-programs
+           (python-mode "/home/trcabel/miniconda3/envs/pose-residual/bin/pyls"))
+          (python-shell-interpreter . "/home/trcabel/miniconda3/envs/sup-icp/bin/python")
+          (eglot-server-programs
+           (python-mode "/home/trcabel/miniconda3/envs/sup-icp/bin/pyls"))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

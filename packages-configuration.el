@@ -88,12 +88,28 @@
 ;; eglot
 ;; ;;;;;;;;;;;;;;;;;;;
 
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
-(add-hook 'python-mode-hook 'eglot-ensure)
-(global-set-key(kbd "C-c l r") 'eglot-rename)
+;(add-hook 'c-mode-hook 'eglot-ensure)
+;(add-hook 'c++-mode-hook 'eglot-ensure)
+;(add-hook 'python-mode-hook 'eglot-ensure)
+;(global-set-key(kbd "C-c l r") 'eglot-rename)
 
-(setq company-transformers nil)
+;(setq company-transformers nil)
+
+;; lsp-mode
+;; ;;;;;;;;;;;;;;;;;;;
+
+(setq lsp-keymap-prefix "C-c l")
+
+(require 'lsp-mode)
+(add-hook 'c-mode-hook #'lsp)
+(add-hook 'c++-mode-hook #'lsp)
+(add-hook 'python-mode-hook #'lsp)
+
+
+;; dap-mode // debugger the command is dap-debug
+;; ;;;;;;;;;;;;;;;;;;;
+;(require 'dap-gdb-lldb)
+;(require 'dap-python)
 
 ;; ccls
 ;; ;;;;;;;;;;;;;;;;;;;
@@ -139,17 +155,17 @@
 
 (add-hook 'after-init-hook 'global-company-mode)
 
-(setq company-idle-delay 0.2)
+(setq company-idle-delay 0.0)
 (setq company-minimum-prefix-length 1)
 
 (setq company-dabbrev-downcase nil)
 
-(add-hook 'c++-mode-hook
-          (lambda ()
-            (set (make-local-variable 'company-backends) '((
-                                                            company-capf
-                                                            company-files
-                                                            )))))
+;(add-hook 'c++-mode-hook
+;          (lambda ()
+;            (set (make-local-variable 'company-backends) '((
+;                                                            company-capf
+;                                                            company-files
+;                                                            )))))
 
 (add-hook 'emacs-lisp-mode-hook  'company-mode)
 (add-hook      'cmake-mode-hook  'company-mode)

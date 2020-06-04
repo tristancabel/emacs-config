@@ -36,6 +36,7 @@
 ;; beacon -> highlight cursor after window moves
 ;; company -> Company is a modular in-buffer completion mechanism
 ;; company-web -> company for web development
+;; conda  -> to work with conda environment
 ;; dash -> A modern list api for Emacs. No 'cl required.
 ;; flycheck -> syntax checker
 ;; git-gutter -> to have + = on line changes by git
@@ -62,7 +63,7 @@
 (defvar init-packages '(helm projectile esqlite helm-projectile magit
                              beacon rich-minority undo-tree use-package
                              which-key helm-flycheck helm-ag flycheck company
-                             company-web dash helm-dash
+                             company-web dash helm-dash conda
                              ccls eglot realgud
                              git-gutter neotree rainbow-mode
                              company-quickhelp smart-mode-line cmake-mode markdown-mode js2-mode json-mode

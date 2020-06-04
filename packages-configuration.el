@@ -36,8 +36,18 @@
 (global-git-gutter-mode +1)
 
 ;; ediff - don't start another frame
+;; ;;;;;;;;;;;;;;;;;;;;
 (require 'ediff)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+
+;; conda
+;; ;;;;;;;;;;;;;;;;;;;;
+(require 'conda)
+(conda-env-initialize-interactive-shells)
+(custom-set-variables
+ '(conda-anaconda-home "/home/trcabel/miniconda3/"))
+
 
 ;;helm
 ;; ;;;;;;;;;;;;;;;;;;;;
@@ -139,7 +149,7 @@
 
 (add-hook 'after-init-hook 'global-company-mode)
 
-(setq company-idle-delay 0.2)
+(setq company-idle-delay 0.1)
 (setq company-minimum-prefix-length 1)
 
 (setq company-dabbrev-downcase nil)

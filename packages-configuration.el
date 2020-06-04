@@ -36,8 +36,18 @@
 (global-git-gutter-mode +1)
 
 ;; ediff - don't start another frame
+;; ;;;;;;;;;;;;;;;;;;;;
 (require 'ediff)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+
+;; conda
+;; ;;;;;;;;;;;;;;;;;;;;
+(require 'conda)
+(conda-env-initialize-interactive-shells)
+(custom-set-variables
+ '(conda-anaconda-home "/home/trcabel/miniconda3/"))
+
 
 ;;helm
 ;; ;;;;;;;;;;;;;;;;;;;;

@@ -105,6 +105,16 @@
 (add-hook 'c++-mode-hook #'lsp)
 (add-hook 'python-mode-hook #'lsp)
 
+;; lsp-ui
+;; ;;;;;;;;;;;;;;;;;;;
+(require 'lsp-ui)
+(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+
+;lsp-ui-sideline-show-diagnostics show diagnostics messages in sideline
+;lsp-ui-sideline-show-hover show hover messages in sideline
+;lsp-ui-sideline-show-code-actions show code actions in sideline
+(setq lsp-ui-sideline-delay 0.5)
 
 ;; dap-mode // debugger the command is dap-debug
 ;; ;;;;;;;;;;;;;;;;;;;
@@ -114,12 +124,22 @@
 ;; ccls
 ;; ;;;;;;;;;;;;;;;;;;;
 
-;;(require 'ccls)
+(require 'ccls)
 ;;(add-to-list 'eglot-server-programs
  ;;            '((c++ mode c-mode) . ("/home/trcabel/Tools/ccls/build/Release/ccls")))
-;(setq ccls-executable "/home/trcabel/Tools/ccls/build/Release/ccls")
+(setq ccls-executable "/home/trcabel/Tools/ccls/Release/bin/ccls")
 ;;setq(ccls-initialization-options "--init='{\"compilationDatabaseDirectory\":\"build\"}'")
+(setq lsp-prefer-flymake nil)
 
+;; flycheck
+;; ;;;;;;;;;;;;;;;;;;;
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+
+;;projectile
+;; ;;;;;;;;;;;;;;;;;;;;
+;; extra prefix for projectile
 (defun projectile-project-find-function (dir)
   (let* ((root (projectile-project-root dir)))
     (and root (cons 'transient root))))
@@ -127,11 +147,7 @@
 (with-eval-after-load 'project
   (add-to-list 'project-find-functions 'projectile-project-find-function))
 
-;;--init='{"compilationDatabaseCommand":"/tmp/c/x"}'
 
-;;projectile
-;; ;;;;;;;;;;;;;;;;;;;;
-;; extra prefix for projectile
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
@@ -157,8 +173,14 @@
 
 (setq company-idle-delay 0.0)
 (setq company-minimum-prefix-length 1)
+(setq company-selection-wrap-around t)
+; Use tab key to cycle through suggestions. ('tng' means 'tab and go')
+(company-tng-configure-default)
 
-(setq company-dabbrev-downcase nil)
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "SPC") #'company-complete-selection))
+
+;(setq company-dabbrev-downcase nil)
 
 ;(add-hook 'c++-mode-hook
 ;          (lambda ()
@@ -167,11 +189,11 @@
 ;                                                            company-files
 ;                                                            )))))
 
-(add-hook 'emacs-lisp-mode-hook  'company-mode)
-(add-hook      'cmake-mode-hook  'company-mode)
-(add-hook       'html-mode-hook  'company-mode)
-(add-hook        'qml-mode-hook  'company-mode)
-(add-hook        'js2-mode-hook  'company-mode)
+;(add-hook 'emacs-lisp-mode-hook  'company-mode)
+;(add-hook      'cmake-mode-hook  'company-mode)
+;(add-hook       'html-mode-hook  'company-mode)
+;(add-hook        'qml-mode-hook  'company-mode)
+;(add-hook        'js2-mode-hook  'company-mode)
 
 ;; company colors
  (require 'color)

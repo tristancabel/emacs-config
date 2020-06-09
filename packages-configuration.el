@@ -1,219 +1,413 @@
+;;; package config
+;;;
+
 ;; smart-mode-line
+;; smart-mode-line -> line model
 ;; ;;;;;;;;;;;;;;;;;;;;
-(setq sml/no-confirm-load-theme t)
-(sml/setup)
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (setq sml/no-confirm-load-theme t)
+  (sml/setup))
+
 
 ;; neotree
+;; neotree -> tree navigation mode (activated on F8)
 ;; ;;;;;;;;;;;;;;;;;;;;
-(global-set-key [f8] 'neotree-toggle)
+;(global-set-key [f8] 'neotree-toggle)
 
 ;; undo-tree
+;; undo and redo functions
 ;; ;;;;;;;;;;;;;;;;;;;;
-(global-undo-tree-mode)
-(setq undo-tree-visualizer-timestamps t)
-(setq undo-tree-visualizer-diff t)
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode)
+  (setq undo-tree-visualizer-timestamps t)
+ (setq undo-tree-visualizer-diff t))
 
+;; beacon
 ;; highlight cursor after window moves
 ;; ;;;;;;;;;;;;;;;;;;;;
-(beacon-mode 1)
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1))
 
 ;; which-key
+;; displays the key bindings following your currently entered incomplete command
 ;; ;;;;;;;;;;;;;;;;;;;;
-(which-key-mode)
-
-;; magit
-;; ;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-c v s") 'magit-status)
-(global-set-key (kbd "C-c v l") 'magit-log)
-(global-set-key (kbd "C-c v v") 'magit-blame)
-(global-set-key (kbd "C-c v p") 'magit-pull)
-(global-set-key (kbd "C-c v b") 'magit-branch-popup)
-
-
-(global-set-key (kbd "C-=") 'er/expand-region)
-
-;; Highlight git lines change
-(global-git-gutter-mode +1)
-
-;; ediff - don't start another frame
-;; ;;;;;;;;;;;;;;;;;;;;
-(require 'ediff)
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-
-
-;; conda
-;; ;;;;;;;;;;;;;;;;;;;;
-(require 'conda)
-(conda-env-initialize-interactive-shells)
-(custom-set-variables
- '(conda-anaconda-home "/home/trcabel/miniconda3/"))
-
-
-;;helm
-;; ;;;;;;;;;;;;;;;;;;;;
-(setq helm-candidate-number-limit 100)
-
-(setq helm-mini-default-sources '(helm-source-buffers-list
-                                  helm-source-recentf))
-
-;; From https://gist.github.com/antifuchs/9238468
-(setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
-      helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly.
-      helm-yas-display-key-on-candidate t
-      helm-quick-update t
-      helm-M-x-requires-pattern nil
-      helm-ff-skip-boring-files t
-      helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
-      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-      helm-display-header-line nil
-      )
-
-(global-set-key(kbd "C-h a") 'helm-apropos)
-(global-set-key(kbd "C-x C-b") 'helm-buffers-list)
-(global-set-key(kbd "C-x b") 'helm-mini)
-(global-set-key(kbd "M-y") 'helm-show-kill-ring)
-(global-set-key(kbd "M-x") 'helm-M-x)
-(global-set-key(kbd "C-x C-f") 'helm-find-files)
-
-;(global-set-key(kbd "C-x c o") 'helm-occur) ;; WHAT
-;(global-set-key(kbd "C-x c s") 'helm-swoop) ;; WHAT
-;(global-set-key(kbd "C-x c y") 'helm-yas-complete) ;; WHAT
-;(global-set-key(kbd "C-x c Y") 'helm-yas-create-snippet-on-region) ;; WHAT
-;(global-set-key(kbd "C-x c b") 'my/helm-do-grep-book-notes) ;; WHAT
-;(global-set-key(kbd "C-x c SPC") 'helm-all-mark-rings) ;; WHAT
-(ido-mode -1) ;; Turn off ido mode in case I enabled it accidentally
-(helm-mode 1)
-(helm-autoresize-mode 1)
-(setq helm-autoresize-max-height 30)
-(setq helm-autoresize-min-height 30)
-
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
-
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
 
 ;; find-other-file
 ;; ;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-c a") 'ff-find-other-file)
 
-;; eglot
-;; ;;;;;;;;;;;;;;;;;;;
+;; ediff - don't start another frame
+;; ;;;;;;;;;;;;;;;;;;;;
+;(require 'ediff)
+;(setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-;(add-hook 'c-mode-hook 'eglot-ensure)
-;(add-hook 'c++-mode-hook 'eglot-ensure)
-;(add-hook 'python-mode-hook 'eglot-ensure)
-;(global-set-key(kbd "C-c l r") 'eglot-rename)
+;; magit
+;; ;;;;;;;;;;;;;;;;;;;;
+(use-package magit
+  :ensure t
+  :bind (("C-c v s" . magit-status)
+         ("C-c v l" . magit-log)
+         ("C-c v v" . magit-blame)
+         ("C-c v p" . magit-pull)
+         ("C-c v b" . magit-branch-popup))
+         )
 
-;(setq company-transformers nil)
+;; Highlight git lines change
+(use-package git-gutter-fringe
+  :ensure t
+  :config
+  (global-git-gutter-mode))
 
-;; lsp-mode
-;; ;;;;;;;;;;;;;;;;;;;
+;(global-set-key (kbd "C-=") 'er/expand-region)
 
-(setq lsp-keymap-prefix "C-c l")
 
-(require 'lsp-mode)
-(add-hook 'c-mode-hook #'lsp)
-(add-hook 'c++-mode-hook #'lsp)
-(add-hook 'python-mode-hook #'lsp)
+;; counsel/ivy/swipper
+;; completion framework
+;; ;;;;;;;;;;;;;;;;;;;;
+(use-package counsel
+  :ensure t
+  :bind
+  (("M-y" . counsel-yank-pop)
+   :map ivy-minibuffer-map
+   ("M-y" . ivy-next-line)))
 
-;; lsp-ui
-;; ;;;;;;;;;;;;;;;;;;;
-(require 'lsp-ui)
-(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+(use-package ivy :demand
+             :diminish (ivy-mode)
+             :bind (("C-x b" . ivy-switch-buffer))
+             :config
+             (setq ivy-use-virtual-buffers t
+                   ivy-count-format "%d/%d "
+                   ivy-display-style 'fancy))
 
-;lsp-ui-sideline-show-diagnostics show diagnostics messages in sideline
-;lsp-ui-sideline-show-hover show hover messages in sideline
-;lsp-ui-sideline-show-code-actions show code actions in sideline
-(setq lsp-ui-sideline-delay 0.5)
+(use-package swiper
+  :ensure t
+  :bind (("C-s" . swiper-isearch)
+     ("C-r" . swiper-isearch)
+     ("C-c C-r" . ivy-resume)
+     ("M-x" . counsel-M-x)
+     ("C-x C-f" . counsel-find-file))
+  :config
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-display-style 'fancy)
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+    ))
 
-;; dap-mode // debugger the command is dap-debug
-;; ;;;;;;;;;;;;;;;;;;;
-;(require 'dap-gdb-lldb)
-;(require 'dap-python)
 
-;; ccls
-;; ;;;;;;;;;;;;;;;;;;;
+;; ;;projectile
+;; project interaction library for Emacs.
+;; ;; ;;;;;;;;;;;;;;;;;;;;
+(use-package projectile
+    :ensure t
+    :bind (:map projectile-mode-map
+                  ("s-p" . 'projectile-command-map)
+                  ("C-c p" . 'projectile-command-map)
+                )
+    :config
+    (setq projectile-completion-system 'ivy)
+    (add-to-list 'projectile-globally-ignored-directories "build*")
+    (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")
+    (projectile-mode 1))
 
-(require 'ccls)
-;;(add-to-list 'eglot-server-programs
- ;;            '((c++ mode c-mode) . ("/home/trcabel/Tools/ccls/build/Release/ccls")))
-(setq ccls-executable "/home/trcabel/Tools/ccls/Release/bin/ccls")
-;;setq(ccls-initialization-options "--init='{\"compilationDatabaseDirectory\":\"build\"}'")
-(setq lsp-prefer-flymake nil)
+
+;; ;; extra prefix for projectile
+;; (defun projectile-project-find-function (dir)
+;;   (let* ((root (projectile-project-root dir)))
+;;     (and root (cons 'transient root))))
+
+;; (with-eval-after-load 'project
+;;   (add-to-list 'project-find-functions 'projectile-project-find-function))
+
+
+;; (projectile-mode +1)
+;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+;; (projectile-register-project-type 'cmake '("CMakeLists.txt")
+;;                                   :compilation-dir "build"
+;;                                   :configure "cmake %s"
+;;                                   :compile "make -j"
+;;                                   :test "make test")
+
+;; ;;helm-projectile
+;; (projectile-global-mode)
+;; (setq projectile-completion-system 'helm)
+;; (helm-projectile-on)
+;; (global-set-key(kbd "C-c h") 'helm-projectile)
+
+
+
+
+
+;; conda
+;; to work with conda environment
+;; ;;;;;;;;;;;;;;;;;;;;
+(use-package conda
+  :ensure t
+  :init
+  (conda-env-initialize-interactive-shells)
+  (setq conda-anaconda-home (expand-file-name "~/miniconda3"))
+  (setq conda-env-home-directory (expand-file-name "~/miniconda3")))
 
 ;; flycheck
+;; syntax checker
 ;; ;;;;;;;;;;;;;;;;;;;
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+ (use-package flycheck
+   :ensure t
+   :init
+   (global-flycheck-mode t)
+   :config
+   ;; Check only when saving or opening files. Newline & idle checks are a mote
+   ;; excessive and can catch code in an incomplete state, producing false
+   ;; positives, so we removed them.
+   (setq flycheck-check-syntax-automatically '(save mode-enabled idle-buffer-switch))
+
+   ;; For the above functionality, check syntax in a buffer that you switched to
+   ;; only briefly. This allows "refreshing" the syntax check state for several
+   ;; buffers quickly after e.g. changing a config file.
+   (setq flycheck-buffer-switch-check-intermediate-buffers t)
+
+   ;; Display errors a little quicker (default is 0.9s)
+   (setq flycheck-display-errors-delay 0.25))
 
 
-;;projectile
-;; ;;;;;;;;;;;;;;;;;;;;
-;; extra prefix for projectile
-(defun projectile-project-find-function (dir)
-  (let* ((root (projectile-project-root dir)))
-    (and root (cons 'transient root))))
+; :custom
+;  (flycheck-global-modes
+;   '(not text-mode outline-mode fundamental-mode org-mode
+;         diff-mode shell-mode eshell-mode term-mode))
 
-(with-eval-after-load 'project
-  (add-to-list 'project-find-functions 'projectile-project-find-function))
-
-
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
-(projectile-register-project-type 'cmake '("CMakeLists.txt")
-                                  :compilation-dir "build"
-                                  :configure "cmake %s"
-                                  :compile "make -j"
-                                  :test "make test")
-
-;;helm-projectile
-(projectile-global-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-(global-set-key(kbd "C-c h") 'helm-projectile)
-
+;; company
 ;; Completion hooks
 ;; ;;;;;;;;;;;;;;;;;;;;
+(use-package company
+  :ensure t
+  ;  :bind ("RET" . company-complete)
+  :hook
+  (after-init . global-company-mode)
+  ((c++-mode
+    c-mode
+    python-mode) . (lambda () (set (make-local-variable 'company-backends)
+                            '((company-capf
+                               company-files
+                               ;; company-dabbrev-code
+                               )))))
+  :config
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 1)
+  (setq company-selection-wrap-around t)
+  (setq company-tooltip-limit 10)
+  (setq company-dabbrev-downcase nil) ; completion in case-sensitie mode
+  (setq company-dabbrev-ignore-case nil)
+  (setq company-show-numbers t)
+  )
 
-(require 'company)
-(global-company-mode t)
-
-(add-hook 'after-init-hook 'global-company-mode)
-
-(setq company-idle-delay 0.0)
-(setq company-minimum-prefix-length 1)
-(setq company-selection-wrap-around t)
-; Use tab key to cycle through suggestions. ('tng' means 'tab and go')
-(company-tng-configure-default)
-
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "SPC") #'company-complete-selection))
-
-;(setq company-dabbrev-downcase nil)
-
-;(add-hook 'c++-mode-hook
-;          (lambda ()
-;            (set (make-local-variable 'company-backends) '((
-;                                                            company-capf
-;                                                            company-files
-;                                                            )))))
-
-;(add-hook 'emacs-lisp-mode-hook  'company-mode)
-;(add-hook      'cmake-mode-hook  'company-mode)
-;(add-hook       'html-mode-hook  'company-mode)
-;(add-hook        'qml-mode-hook  'company-mode)
-;(add-hook        'js2-mode-hook  'company-mode)
+;; add icons to cmpany backends
+(use-package company-box
+  :ensure t
+  :after company
+  :delight
+  :hook (company-mode . company-box-mode))
 
 ;; company colors
- (require 'color)
+(require 'color)
+(let ((bg (face-attribute 'default :background)))
+  (custom-set-faces
+   `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+   `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+   `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+   `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+   `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
 
-  (let ((bg (face-attribute 'default :background)))
-    (custom-set-faces
-     `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
-     `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
-     `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
-     `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
-     `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
 
-(company-quickhelp-mode 1)
+;; cmake stuff
+(use-package cmake-mode
+  :ensure t
+  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+
+(use-package cmake-font-lock
+  :ensure t
+  :after (cmake-mode)
+  :hook (cmake-mode . cmake-font-lock-activate))
+
+(use-package cmake-ide
+  :ensure t
+  :after projectile
+  :hook (c++-mode . my/cmake-ide-find-project)
+  :preface
+  (defun my/cmake-ide-find-project ()
+    "Finds the directory of the project for cmake-ide."
+    (with-eval-after-load 'projectile
+      (setq cmake-ide-project-dir (projectile-project-root))
+      (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
+    (setq cmake-ide-compile-command
+          (concat "cd " cmake-ide-build-dir " && cmake .. && make -j"))
+    (cmake-ide-load-db))
+
+  (defun my/switch-to-compilation-window ()
+    "Switches to the *compilation* buffer after compilation."
+    (other-window 1))
+  :bind ([remap comment-region] . cmake-ide-compile)
+  :init (cmake-ide-setup)
+  :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
+
+
+;; lsp-mode
+;; language server protocol
+;; ;;;;;;;;;;;;;;;;;;;
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :custom
+  ;; Auto-kill LSP server after last workspace buffer is killed.
+  (lsp-keep-workspace-alive nil)
+  (lsp-auto-guess-root nil)
+;  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
+  (lsp-enable-snippet nil)
+  (lsp-file-watch-ignored '("build" ".git" "build*" "doc" ".ccls-cache"))
+  (lsp-flycheck-live-reporting t)
+  :bind (:map lsp-mode-map ("C-c l" . lsp-format-buffer))
+  :hook
+  ((python-mode c-mode c++-mode) . lsp)
+  )
+
+; TODO get correct include
+;; if you are ivy user
+;(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+;; (setq lsp-keymap-prefix "C-c l")
+
+;; ;; lsp-ui
+;; ;; ;;;;;;;;;;;;;;;;;;;
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :requires lsp-mode flycheck
+  :bind
+    (:map lsp-mode-map
+    ("C-c C-r" . lsp-ui-peek-find-references)
+    ("C-c C-j" . lsp-ui-peek-find-definitions)
+    ("C-c i"   . lsp-ui-peek-find-implementation)
+    ("C-c m"   . lsp-ui-imenu)
+    ("C-c s"   . lsp-ui-sideline-mode)
+    ("C-c d"   . ladicle/toggle-lsp-ui-doc))
+;   :bind (:map lsp-ui-mode-map
+;              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+;              ([remap xref-find-references] . lsp-ui-peek-find-references)
+                                        ;              ("C-c u" . lsp-ui-imenu))
+    :custom
+    (lsp-ui-doc-enable nil)
+    (lsp-ui-doc-header t)
+    (lsp-ui-sideline-enable nil)
+    (lsp-ui-sideline-ignore-duplicate t)
+    (lsp-ui-sideline-show-symbol t)
+    (lsp-ui-sideline-show-hover t)
+    (lsp-ui-sideline-show-diagnostics nil)
+    (lsp-ui-sideline-show-code-actions t)
+    (lsp-ui-peek-enable t)
+;  :config
+;  (setq lsp-ui-doc-enable t
+;        lsp-ui-doc-position 'top
+;        lsp-ui-sideline-show-diagnostics t
+;        lsp-ui-sideline-ignore-duplicate t
+;  ;      lsp-ui-sideline-enable nil
+;        ;lsp-ui-flycheck-enable t
+;        lsp-ui-flycheck-list-position 'right
+;        ;lsp-ui-flycheck-live-reporting t
+;        lsp-ui-peek-enable t
+;        lsp-ui-peek-list-width 60
+;        lsp-ui-peek-peek-height 25
+;        lsp-ui-peek-show-directory t)
+                                        ;
+  :hook ((lsp-mode-hook) . lsp-ui-mode))
+
+;; ccls
+;; lsp for c++
+;; ;;;;;;;;;;;;;;;;;;;
+(use-package ccls
+  :ensure t
+  :after projectile
+  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+         (lambda () (require 'ccls) (lsp)))
+  :custom
+  (ccls-executable "/home/trcabel/Tools/ccls/Release/bin/ccls")
+;  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+  (projectile-project-root-files-top-down-recurring
+   (append '("compile_commands.json" ".ccls")
+           projectile-project-root-files-top-down-recurring)))
+
+; TODO look at https://github.com/MaskRay/Config/blob/master/home/.config/doom/modules/private/my-cc/autoload.el
+
+;; (defun ccls/callee ()
+;;   (interactive)
+;;   (lsp-ui-peek-find-custom "$ccls/call" '(:callee t)))
+;; (defun ccls/caller ()
+;;   (interactive)
+;;   (lsp-ui-peek-find-custom "$ccls/call"))
+;; (defun ccls/vars (kind)
+;;   (lsp-ui-peek-find-custom "$ccls/vars" `(:kind ,kind)))
+;; (defun ccls/base (levels)
+;;   (lsp-ui-peek-find-custom "$ccls/inheritance" `(:levels ,levels)))
+;; (defun ccls/derived (levels)
+;;   (lsp-ui-peek-find-custom "$ccls/inheritance" `(:levels ,levels :derived t)))
+;; (defun ccls/member (kind)
+;;   (lsp-ui-peek-find-custom "$ccls/member" `(:kind ,kind)))
+
+;; ;; The meaning of :role corresponds to https://github.com/maskray/ccls/blob/master/src/symbol.h
+
+;; ;; References w/ Role::Address bit (e.g. variables explicitly being taken addresses)
+;; (defun ccls/references-address ()
+;;   (interactive)
+;;   (lsp-ui-peek-find-custom "textDocument/references"
+;;    (plist-put (lsp--text-document-position-params) :role 128)))
+
+;; ;; References w/ Role::Dynamic bit (macro expansions)
+;; (defun ccls/references-macro ()
+;;   (interactive)
+;;   (lsp-ui-peek-find-custom "textDocument/references"
+;;    (plist-put (lsp--text-document-position-params) :role 64)))
+
+;; ;; References w/o Role::Call bit (e.g. where functions are taken addresses)
+;; (defun ccls/references-not-call ()
+;;   (interactive)
+;;   (lsp-ui-peek-find-custom "textDocument/references"
+;;    (plist-put (lsp--text-document-position-params) :excludeRole 32)))
+
+;; ;; References w/ Role::Read
+;; (defun ccls/references-read ()
+;;   (interactive)
+;;   (lsp-ui-peek-find-custom "textDocument/references"
+;;    (plist-put (lsp--text-document-position-params) :role 8)))
+
+;; ;; References w/ Role::Write
+;; (defun ccls/references-write ()
+;;   (interactive)
+;;   (lsp-ui-peek-find-custom "textDocument/references"
+;;    (plist-put (lsp--text-document-position-params) :role 16)))
+
+;; ;; eglot
+;; ;; ;;;;;;;;;;;;;;;;;;;
+
+;; ;(add-hook 'c-mode-hook 'eglot-ensure)
+;; ;(add-hook 'c++-mode-hook 'eglot-ensure)
+;; ;(add-hook 'python-mode-hook 'eglot-ensure)
+;; ;(global-set-key(kbd "C-c l r") 'eglot-rename)
+
+;; ;(setq company-transformers nil)
+
+
+;; (require 'ccls)
+;; ;;(add-to-list 'eglot-server-programs
+;;  ;;            '((c++ mode c-mode) . ("/home/trcabel/Tools/ccls/build/Release/ccls")))
+;;
+;; ;;setq(ccls-initialization-options "--init='{\"compilationDatabaseDirectory\":\"build\"}'")
+;; (setq lsp-prefer-flymake nil)
+;; (company-quickhelp-mode 1)

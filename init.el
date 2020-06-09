@@ -83,7 +83,7 @@
  '(lsp-prefer-flymake nil t)
  '(package-selected-packages
    (quote
-    (ccls lsp-ui lsp-mode company flycheck conda projectile counsel ivy which-key beacon git-gutter-fringe magit which-key-mode beacon-mode undo-tree smart-mode-line use-package))))
+    (eglot company conda projectile counsel ivy which-key beacon git-gutter-fringe magit which-key-mode beacon-mode undo-tree smart-mode-line use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

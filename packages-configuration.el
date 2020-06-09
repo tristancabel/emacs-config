@@ -10,12 +10,6 @@
   (setq sml/no-confirm-load-theme t)
   (sml/setup))
 
-
-;; neotree
-;; neotree -> tree navigation mode (activated on F8)
-;; ;;;;;;;;;;;;;;;;;;;;
-;(global-set-key [f8] 'neotree-toggle)
-
 ;; undo-tree
 ;; undo and redo functions
 ;; ;;;;;;;;;;;;;;;;;;;;
@@ -68,8 +62,6 @@
   :config
   (global-git-gutter-mode))
 
-;(global-set-key (kbd "C-=") 'er/expand-region)
-
 
 ;; counsel/ivy/swipper
 ;; completion framework
@@ -88,6 +80,7 @@
              (setq ivy-use-virtual-buffers t
                    ivy-count-format "%d/%d "
                    ivy-display-style 'fancy))
+
 
 (use-package swiper
   :ensure t
@@ -118,35 +111,18 @@
     (setq projectile-completion-system 'ivy)
     (add-to-list 'projectile-globally-ignored-directories "build*")
     (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")
-    (projectile-mode 1))
-
-
-;; ;; extra prefix for projectile
-;; (defun projectile-project-find-function (dir)
-;;   (let* ((root (projectile-project-root dir)))
-;;     (and root (cons 'transient root))))
-
-;; (with-eval-after-load 'project
-;;   (add-to-list 'project-find-functions 'projectile-project-find-function))
-
-
-;; (projectile-mode +1)
-;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
+    (projectile-mode 1)
+    (defun projectile-project-find-function (dir)
+      (let* ((root (projectile-project-root dir)))
+        (and root (cons 'transient root))))
+    (with-eval-after-load 'project
+      (add-to-list 'project-find-functions 'projectile-project-find-function))
+)
 ;; (projectile-register-project-type 'cmake '("CMakeLists.txt")
 ;;                                   :compilation-dir "build"
 ;;                                   :configure "cmake %s"
 ;;                                   :compile "make -j"
 ;;                                   :test "make test")
-
-;; ;;helm-projectile
-;; (projectile-global-mode)
-;; (setq projectile-completion-system 'helm)
-;; (helm-projectile-on)
-;; (global-set-key(kbd "C-c h") 'helm-projectile)
-
-
-
 
 
 ;; conda
@@ -162,25 +138,23 @@
 ;; flycheck
 ;; syntax checker
 ;; ;;;;;;;;;;;;;;;;;;;
- (use-package flycheck
-   :ensure t
-   :init
-   (global-flycheck-mode t)
-   :config
-   ;; Check only when saving or opening files. Newline & idle checks are a mote
-   ;; excessive and can catch code in an incomplete state, producing false
-   ;; positives, so we removed them.
-   (setq flycheck-check-syntax-automatically '(save mode-enabled idle-buffer-switch))
-
-   ;; For the above functionality, check syntax in a buffer that you switched to
-   ;; only briefly. This allows "refreshing" the syntax check state for several
-   ;; buffers quickly after e.g. changing a config file.
-   (setq flycheck-buffer-switch-check-intermediate-buffers t)
-
-   ;; Display errors a little quicker (default is 0.9s)
-   (setq flycheck-display-errors-delay 0.25))
-
-
+; (use-package flycheck
+;   :ensure t
+;   :init
+;   (global-flycheck-mode t)
+;   :config
+;   ;; Check only when saving or opening files. Newline & idle checks are a mote
+;   ;; excessive and can catch code in an incomplete state, producing false
+;   ;; positives, so we removed them.
+;   (setq flycheck-check-syntax-automatically '(save mode-enabled idle-buffer-switch))
+;
+;   ;; For the above functionality, check syntax in a buffer that you switched to
+;   ;; only briefly. This allows "refreshing" the syntax check state for several
+;   ;; buffers quickly after e.g. changing a config file.
+;   (setq flycheck-buffer-switch-check-intermediate-buffers t)
+;
+;   ;; Display errors a little quicker (default is 0.9s)
+;   (setq flycheck-display-errors-delay 0.25))
 ; :custom
 ;  (flycheck-global-modes
 ;   '(not text-mode outline-mode fundamental-mode org-mode
@@ -191,7 +165,6 @@
 ;; ;;;;;;;;;;;;;;;;;;;;
 (use-package company
   :ensure t
-  ;  :bind ("RET" . company-complete)
   :hook
   (after-init . global-company-mode)
   ((c++-mode
@@ -199,7 +172,7 @@
     python-mode) . (lambda () (set (make-local-variable 'company-backends)
                             '((company-capf
                                company-files
-                               ;; company-dabbrev-code
+;                               ;; company-dabbrev-code
                                )))))
   :config
   (setq company-idle-delay 0)
@@ -261,88 +234,144 @@
   :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
 
 
-;; lsp-mode
-;; language server protocol
-;; ;;;;;;;;;;;;;;;;;;;
-(use-package lsp-mode
-  :ensure t
-  :commands lsp
-  :custom
-  ;; Auto-kill LSP server after last workspace buffer is killed.
-  (lsp-keep-workspace-alive nil)
-  (lsp-auto-guess-root nil)
-;  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-  (lsp-enable-snippet nil)
-  (lsp-file-watch-ignored '("build" ".git" "build*" "doc" ".ccls-cache"))
-  (lsp-flycheck-live-reporting t)
-  :bind (:map lsp-mode-map ("C-c l" . lsp-format-buffer))
-  :hook
-  ((python-mode c-mode c++-mode) . lsp)
-  )
-
-; TODO get correct include
-;; if you are ivy user
-;(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-;; (setq lsp-keymap-prefix "C-c l")
-
-;; ;; lsp-ui
+;; ;; eglot
 ;; ;; ;;;;;;;;;;;;;;;;;;;
-(use-package lsp-ui
+
+(use-package eglot
   :ensure t
-  :commands lsp-ui-mode
-  :requires lsp-mode flycheck
-  :bind
-    (:map lsp-mode-map
-    ("C-c C-r" . lsp-ui-peek-find-references)
-    ("C-c C-j" . lsp-ui-peek-find-definitions)
-    ("C-c i"   . lsp-ui-peek-find-implementation)
-    ("C-c m"   . lsp-ui-imenu)
-    ("C-c s"   . lsp-ui-sideline-mode)
-    ("C-c d"   . ladicle/toggle-lsp-ui-doc))
-;   :bind (:map lsp-ui-mode-map
-;              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-;              ([remap xref-find-references] . lsp-ui-peek-find-references)
-                                        ;              ("C-c u" . lsp-ui-imenu))
-    :custom
-    (lsp-ui-doc-enable nil)
-    (lsp-ui-doc-header t)
-    (lsp-ui-sideline-enable nil)
-    (lsp-ui-sideline-ignore-duplicate t)
-    (lsp-ui-sideline-show-symbol t)
-    (lsp-ui-sideline-show-hover t)
-    (lsp-ui-sideline-show-diagnostics nil)
-    (lsp-ui-sideline-show-code-actions t)
-    (lsp-ui-peek-enable t)
-;  :config
-;  (setq lsp-ui-doc-enable t
-;        lsp-ui-doc-position 'top
-;        lsp-ui-sideline-show-diagnostics t
-;        lsp-ui-sideline-ignore-duplicate t
-;  ;      lsp-ui-sideline-enable nil
-;        ;lsp-ui-flycheck-enable t
-;        lsp-ui-flycheck-list-position 'right
-;        ;lsp-ui-flycheck-live-reporting t
-;        lsp-ui-peek-enable t
-;        lsp-ui-peek-list-width 60
-;        lsp-ui-peek-peek-height 25
-;        lsp-ui-peek-show-directory t)
-                                        ;
-  :hook ((lsp-mode-hook) . lsp-ui-mode))
+  :after projectile
+  :commands (eglot eglot-ensure)
+  :hook ((rust-mode . eglot-ensure)
+         (c-mode . eglot-ensure)
+         (c++-mode . eglot-ensure)
+         (python-mode . eglot-ensure))
+  :bind (:map eglot-mode-map
+              ("C-c l r" . eglot-rename)
+              ("C-c l h" . eglot-help-at-point)
+              ("C-c l a" . eglot-code-actions)
+              ("M-n"     . flymake-goto-next-error)
+              ("M-p"     . flymake-goto-prev-error))
+  :config
+  (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
+                                        "-init={\"compilationDatabaseDirectory\":\"build\"}"))                                        ;  (company-transformers nil)
+  :init
+  (setq eglot-autoshutdown t))
+
+(defun eglot-ccls-inheritance-hierarchy (&optional derived)
+  "Show inheritance hierarchy for the thing at point.
+If DERIVED is non-nil (interactively, with prefix argument), show
+the children of class at point."
+  (interactive "P")
+  (if-let* ((res (jsonrpc-request
+                  (eglot--current-server-or-lose)
+                  :$ccls/inheritance
+                  (append (eglot--TextDocumentPositionParams)
+                          `(:derived ,(if derived t :json-false))
+                          '(:levels 100) '(:hierarchy t))))
+            (tree (list (cons 0 res))))
+      (with-help-window "*ccls inheritance*"
+        (with-current-buffer standard-output
+          (while tree
+            (pcase-let ((`(,depth . ,node) (pop tree)))
+              (cl-destructuring-bind (&key uri range) (plist-get node :location)
+                (insert (make-string depth ?\ ) (plist-get node :name) "\n")
+                (make-text-button (+ (point-at-bol 0) depth) (point-at-eol 0)
+                                  'action (lambda (_arg)
+                                            (interactive)
+                                            (find-file (eglot--uri-to-path uri))
+                                            (goto-char (car (eglot--range-region range)))))
+                (cl-loop for child across (plist-get node :children)
+                         do (push (cons (1+ depth) child) tree)))))))
+    (eglot--error "Hierarchy unavailable")))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ;; lsp-mode
+;; ;; language server protocol
+;; ;; ;;;;;;;;;;;;;;;;;;;
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :commands lsp
+;;   :custom
+;;   ;; Auto-kill LSP server after last workspace buffer is killed.
+;;   (lsp-keep-workspace-alive nil)
+;;   (lsp-auto-guess-root nil)
+;; ;  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
+;;   (lsp-enable-snippet nil)
+;;   (lsp-file-watch-ignored '("build" ".git" "build*" "doc" ".ccls-cache"))
+;;   (lsp-flycheck-live-reporting t)
+;;   :bind (:map lsp-mode-map ("C-c l" . lsp-format-buffer))
+;;   :hook
+;;   ((python-mode c-mode c++-mode) . lsp)
+;;   )
+
+;; ; TODO get correct include
+;; ;; if you are ivy user
+;; ;(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+;; ;; (setq lsp-keymap-prefix "C-c l")
+
+;; ;; ;; lsp-ui
+;; ;; ;; ;;;;;;;;;;;;;;;;;;;
+;; (use-package lsp-ui
+;;   :ensure t
+;;   :commands lsp-ui-mode
+;;   :requires lsp-mode flycheck
+;;   :bind
+;;     (:map lsp-mode-map
+;;     ("C-c C-r" . lsp-ui-peek-find-references)
+;;     ("C-c C-j" . lsp-ui-peek-find-definitions)
+;;     ("C-c i"   . lsp-ui-peek-find-implementation)
+;;     ("C-c m"   . lsp-ui-imenu)
+;;     ("C-c s"   . lsp-ui-sideline-mode)
+;;     ("C-c d"   . ladicle/toggle-lsp-ui-doc))
+;; ;   :bind (:map lsp-ui-mode-map
+;; ;              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+;; ;              ([remap xref-find-references] . lsp-ui-peek-find-references)
+;;                                         ;              ("C-c u" . lsp-ui-imenu))
+;;     :custom
+;;     (lsp-ui-doc-enable nil)
+;;     (lsp-ui-doc-header t)
+;;     (lsp-ui-sideline-enable nil)
+;;     (lsp-ui-sideline-ignore-duplicate t)
+;;     (lsp-ui-sideline-show-symbol t)
+;;     (lsp-ui-sideline-show-hover t)
+;;     (lsp-ui-sideline-show-diagnostics nil)
+;;     (lsp-ui-sideline-show-code-actions t)
+;;     (lsp-ui-peek-enable t)
+;; ;  :config
+;; ;  (setq lsp-ui-doc-enable t
+;; ;        lsp-ui-doc-position 'top
+;; ;        lsp-ui-sideline-show-diagnostics t
+;; ;        lsp-ui-sideline-ignore-duplicate t
+;; ;  ;      lsp-ui-sideline-enable nil
+;; ;        ;lsp-ui-flycheck-enable t
+;; ;        lsp-ui-flycheck-list-position 'right
+;; ;        ;lsp-ui-flycheck-live-reporting t
+;; ;        lsp-ui-peek-enable t
+;; ;        lsp-ui-peek-list-width 60
+;; ;        lsp-ui-peek-peek-height 25
+;; ;        lsp-ui-peek-show-directory t)
+;;                                         ;
+;;   :hook ((lsp-mode-hook) . lsp-ui-mode))
 
 ;; ccls
 ;; lsp for c++
 ;; ;;;;;;;;;;;;;;;;;;;
-(use-package ccls
-  :ensure t
-  :after projectile
-  :hook ((c-mode c++-mode objc-mode cuda-mode) .
-         (lambda () (require 'ccls) (lsp)))
-  :custom
-  (ccls-executable "/home/trcabel/Tools/ccls/Release/bin/ccls")
-;  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-  (projectile-project-root-files-top-down-recurring
-   (append '("compile_commands.json" ".ccls")
-           projectile-project-root-files-top-down-recurring)))
+;; (use-package ccls
+;;   :ensure t
+;;   :after projectile
+;; ;  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+;; ;         (lambda () (require 'ccls) (lsp)))
+;;   :custom
+;;   (ccls-executable "/home/trcabel/Tools/ccls/Release/bin/ccls")
+;;                                         ;  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+;; ;  (ccls-initialization-options "--init='{\"compilationDatabaseDirectory\":\"build\"}'")
+;;   (projectile-project-root-files-top-down-recurring
+;;    (append '("compile_commands.json" ".ccls")
+;;            projectile-project-root-files-top-down-recurring)))
+;;setq
+
 
 ; TODO look at https://github.com/MaskRay/Config/blob/master/home/.config/doom/modules/private/my-cc/autoload.el
 
@@ -393,21 +422,7 @@
 ;;   (lsp-ui-peek-find-custom "textDocument/references"
 ;;    (plist-put (lsp--text-document-position-params) :role 16)))
 
-;; ;; eglot
-;; ;; ;;;;;;;;;;;;;;;;;;;
-
-;; ;(add-hook 'c-mode-hook 'eglot-ensure)
-;; ;(add-hook 'c++-mode-hook 'eglot-ensure)
-;; ;(add-hook 'python-mode-hook 'eglot-ensure)
-;; ;(global-set-key(kbd "C-c l r") 'eglot-rename)
-
-;; ;(setq company-transformers nil)
-
-
 ;; (require 'ccls)
 ;; ;;(add-to-list 'eglot-server-programs
 ;;  ;;            '((c++ mode c-mode) . ("/home/trcabel/Tools/ccls/build/Release/ccls")))
 ;;
-;; ;;setq(ccls-initialization-options "--init='{\"compilationDatabaseDirectory\":\"build\"}'")
-;; (setq lsp-prefer-flymake nil)
-;; (company-quickhelp-mode 1)

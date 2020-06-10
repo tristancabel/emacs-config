@@ -2,10 +2,7 @@ This is my current emacs-config
 
 # Dependencies
 
-The current dependencies are: *libatomic*, *clang*, *ncurses-compat-lib* (needed by cquery), *the_silver_searcher* (ag) and *cquery*.
-
-To install them on fedora do: `sudo dnf install libatomic clang clang-libs ncurses-compat-lib the_silver_searcher libasan libubsan`
-Then install CQuery
+The current dependencies are: *clang*, *libclang-dev*, *ccls*, *pyls*
 
 for **pyls** do the following:
 ```
@@ -30,7 +27,7 @@ cmake --build Release
 ```
 
 The executable will be at *build/Release/ccls*, you shloud add it to your path in **~/.bashrc** file
-`export PATH="$PATH:/home/trcabel/Tools/ccls/build/Release/"`
+`export PATH="$PATH:/home/trcabel/Tools/ccls/Release/"`
 
 # Install
 To install this emacs config, create a symbolic link from `~.emacs.d` to this directory:

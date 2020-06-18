@@ -83,6 +83,25 @@
                                         (kill-line 0)
                                         (indent-according-to-mode)))
 
+
+;; smerge config
+(setq smerge-command-prefix (kbd "C-c s"))
+
+;; Dired
+(setq dired-listing-switches "-alhv --group-directories-first")
+(setq dired-auto-revert-buffer t)
+
+
+;; gdb
+(setq
+ ;; use gdb-many-windows by default
+ gdb-many-windows t
+
+ ;; Non-nil means display source file containing the main routine at startup
+ gdb-show-main t
+ )
+
+
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; rename a file
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

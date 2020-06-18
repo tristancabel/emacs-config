@@ -36,6 +36,26 @@
   :config
   (which-key-mode))
 
+;; json-mode
+;; ;;;;;;;;;;;;;;;;;;;;
+(use-package json-mode
+  :ensure t
+  :mode ("\\.json\\'" . json-mode))
+
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yml\\'")
+
+;; markdown-mode
+;; ;;;;;;;;;;;;;;;;;;;;
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
 ;; find-other-file
 ;; ;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "C-c a") 'ff-find-other-file)
@@ -205,33 +225,33 @@
 ;; cmake stuff
 (use-package cmake-mode
   :ensure t
-  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+  :mode ("\\CMakeLists.txt\\'" "\\.cmake\\'"))
 
 (use-package cmake-font-lock
   :ensure t
   :after (cmake-mode)
   :hook (cmake-mode . cmake-font-lock-activate))
 
-(use-package cmake-ide
-  :ensure t
-  :after projectile
-  :hook (c++-mode . my/cmake-ide-find-project)
-  :preface
-  (defun my/cmake-ide-find-project ()
-    "Finds the directory of the project for cmake-ide."
-    (with-eval-after-load 'projectile
-      (setq cmake-ide-project-dir (projectile-project-root))
-      (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
-    (setq cmake-ide-compile-command
-          (concat "cd " cmake-ide-build-dir " && cmake .. && make -j"))
-    (cmake-ide-load-db))
+;; (use-package cmake-ide
+;;   :ensure t
+;;   :after projectile
+;;   :hook (c++-mode . my/cmake-ide-find-project)
+;;   :preface
+;;   (defun my/cmake-ide-find-project ()
+;;     "Finds the directory of the project for cmake-ide."
+;;     (with-eval-after-load 'projectile
+;;       (setq cmake-ide-project-dir (projectile-project-root))
+;;       (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
+;;     (setq cmake-ide-compile-command
+;;           (concat "cd " cmake-ide-build-dir " && cmake .. && make -j"))
+;;     (cmake-ide-load-db))
 
-  (defun my/switch-to-compilation-window ()
-    "Switches to the *compilation* buffer after compilation."
-    (other-window 1))
-  :bind ([remap comment-region] . cmake-ide-compile)
-  :init (cmake-ide-setup)
-  :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
+;;   (defun my/switch-to-compilation-window ()
+;;     "Switches to the *compilation* buffer after compilation."
+;;     (other-window 1))
+;;   :bind ([remap comment-region] . cmake-ide-compile)
+;;   :init (cmake-ide-setup)
+;;   :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
 
 
 ;; ;; eglot

@@ -62,11 +62,7 @@
 (add-to-list 'auto-mode-alist '("\\.info\\'"        . info-mode))
 (add-to-list 'auto-mode-alist '("\\.qmltypes\\'"    . json-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs\\'"         . html-mode))
-(use-package      cmake-mode :mode "\\.cmake\\'" "\\CMakeLists.txt\\'")
-(use-package javascript-mode :mode "\\.qs\\'")
-(use-package       yaml-mode :mode "\\.yml\\'")
 (use-package        js2-mode :mode "\\.js\\'")
-(use-package       json-mode :mode "\\.json\\'")
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; packages configuration
@@ -83,7 +79,7 @@
  '(lsp-prefer-flymake nil t)
  '(package-selected-packages
    (quote
-    (eglot company conda projectile counsel ivy which-key beacon git-gutter-fringe magit which-key-mode beacon-mode undo-tree smart-mode-line use-package))))
+    (markdown-mode json-mode eglot company conda projectile counsel ivy which-key beacon git-gutter-fringe magit which-key-mode beacon-mode undo-tree smart-mode-line use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

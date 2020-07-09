@@ -253,6 +253,10 @@
 ;;   :init (cmake-ide-setup)
 ;;   :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
 
+;; ;; flymake
+;; ;; ;;;;;;;;;;;;;;;;;;;
+;(remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
+(setq flymake-start-on-flymake-mode nil)
 
 ;; ;; eglot
 ;; ;; ;;;;;;;;;;;;;;;;;;;

@@ -1,6 +1,9 @@
-;;; package config
+;;; package --- config
+;;; Commentary:
+;;; packages configurations
 ;;;
 
+;;; Code:
 ;; smart-mode-line
 ;; smart-mode-line -> line model
 ;; ;;;;;;;;;;;;;;;;;;;;
@@ -18,7 +21,16 @@
   :config
   (global-undo-tree-mode)
   (setq undo-tree-visualizer-timestamps t)
- (setq undo-tree-visualizer-diff t))
+  (setq undo-tree-visualizer-diff t)
+  (setq undo-tree-auto-save-history nil))
+
+
+;; browse-kill-ring
+;; to be able to browse kill-ring
+;; ;;;;;;;;;;;;;;;;;;;;
+(use-package browse-kill-ring
+  :ensure t
+  :bind (("M-y" . brosw-kill-ring)))
 
 ;; beacon
 ;; highlight cursor after window moves
@@ -83,6 +95,34 @@
   (global-git-gutter-mode))
 
 
+;; icons for sidebar
+;; icons
+;; ;;;;;;;;;;;;;;;;;;;;
+(use-package vscode-icon
+  :ensure t
+  :commands (vscode-icon-for-file))
+
+;; dired-sidebar
+;; sidebar with files arborescence
+;; ;;;;;;;;;;;;;;;;;;;;
+(use-package dired-sidebar
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "_")
+  (setq dired-sidebar-theme 'vscode)
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+
 ;; counsel/ivy/swipper
 ;; completion framework
 ;; ;;;;;;;;;;;;;;;;;;;;
@@ -130,20 +170,20 @@
     :config
     (setq projectile-completion-system 'ivy)
     (add-to-list 'projectile-globally-ignored-directories "build*")
-    (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")
+    (add-to-list 'projectile-globally-ignored-directories ".cache")
     (projectile-mode 1)
     (defun projectile-project-find-function (dir)
       (let* ((root (projectile-project-root dir)))
         (and root (cons 'transient root))))
     (with-eval-after-load 'project
       (add-to-list 'project-find-functions 'projectile-project-find-function))
+    (projectile-register-project-type 'cmake '("CMakeLists.txt")
+                                  :compilation-dir "build"
+                                  :configure "cmake %s"
+                                  :compile "make -j 6"
+                                  :install "make -j 6 install"
+                                  :test "make test")
 )
-;; (projectile-register-project-type 'cmake '("CMakeLists.txt")
-;;                                   :compilation-dir "build"
-;;                                   :configure "cmake %s"
-;;                                   :compile "make -j"
-;;                                   :test "make test")
-
 
 ;; conda
 ;; to work with conda environment
@@ -152,33 +192,33 @@
   :ensure t
   :init
   (conda-env-initialize-interactive-shells)
-  (setq conda-anaconda-home (expand-file-name "~/miniconda3"))
-  (setq conda-env-home-directory (expand-file-name "~/miniconda3")))
+  (setq conda-anaconda-home (expand-file-name "~/miniconda3")))
+;  (setq conda-env-home-directory (expand-file-name "~/miniconda3")))
 
 ;; flycheck
 ;; syntax checker
 ;; ;;;;;;;;;;;;;;;;;;;
-; (use-package flycheck
-;   :ensure t
-;   :init
-;   (global-flycheck-mode t)
-;   :config
-;   ;; Check only when saving or opening files. Newline & idle checks are a mote
-;   ;; excessive and can catch code in an incomplete state, producing false
-;   ;; positives, so we removed them.
-;   (setq flycheck-check-syntax-automatically '(save mode-enabled idle-buffer-switch))
-;
-;   ;; For the above functionality, check syntax in a buffer that you switched to
-;   ;; only briefly. This allows "refreshing" the syntax check state for several
-;   ;; buffers quickly after e.g. changing a config file.
-;   (setq flycheck-buffer-switch-check-intermediate-buffers t)
-;
-;   ;; Display errors a little quicker (default is 0.9s)
-;   (setq flycheck-display-errors-delay 0.25))
-; :custom
-;  (flycheck-global-modes
-;   '(not text-mode outline-mode fundamental-mode org-mode
-;         diff-mode shell-mode eshell-mode term-mode))
+ (use-package flycheck
+   :ensure t
+   :init
+   (global-flycheck-mode t)
+   :config
+   ;; Check only when saving or opening files. Newline & idle checks are a mote
+   ;; excessive and can catch code in an incomplete state, producing false
+   ;; positives, so we removed them.
+   (setq flycheck-check-syntax-automatically '(save mode-enabled idle-buffer-switch))
+
+   ;; For the above functionality, check syntax in a buffer that you switched to
+   ;; only briefly. This allows "refreshing" the syntax check state for several
+   ;; buffers quickly after e.g. changing a config file.
+   (setq flycheck-buffer-switch-check-intermediate-buffers t)
+
+   ;; Display errors a little quicker (default is 0.9s)
+   (setq flycheck-display-errors-delay 0.25)
+   :custom
+    (global-flycheck-modes
+     '(not text-mode outline-mode fundamental-mode org-mode
+           diff-mode shell-mode eshell-mode term-mode)))
 
 ;; company
 ;; Completion hooks
@@ -276,8 +316,18 @@
               ("M-n"     . flymake-goto-next-error)
               ("M-p"     . flymake-goto-prev-error))
   :config
-  (add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
-                                        "-init={\"compilationDatabaseDirectory\":\"build\"}"))                                        ;  (company-transformers nil)
+  ;;(add-to-list 'eglot-server-programs '((c-mode c++-mode) "ccls"
+  ;;                                      "-init={\"compilationDatabaseDirectory\":\"build\"}"))                                        ;  (company-transformers nil)
+  (add-to-list 'eglot-server-programs '((c-mode c++-mode) "clangd-13"
+                    "-j=4"
+                    "--malloc-trim"
+                    "--log=error"
+                    "--background-index"
+                    "--clang-tidy"
+                    "--cross-file-rename"
+                    "--completion-style=detailed"
+                    "--pch-storage=memory"))
+  ;;python-mode ("pyright-langserver" "--stdio"))
   :init
   (setq eglot-autoshutdown t))
 

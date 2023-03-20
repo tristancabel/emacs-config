@@ -15,7 +15,8 @@ to enable python debugging with **dap-mode**, do the folowwing:
 pip install "ptvsd>=4.2"
 ```
 
-## ccls install
+## [DEPRECATED use clangd instead] ccls install
+
 Do the following commands:
 
 ```
@@ -28,6 +29,10 @@ cmake --build Release
 
 The executable will be at *build/Release/ccls*, you shloud add it to your path in **~/.bashrc** file
 `export PATH="$PATH:/home/trcabel/Tools/ccls/Release/"`
+
+## clangd
+`sudo apt-get install clangd-13`
+
 
 # Install
 To install this emacs config, create a symbolic link from `~.emacs.d` to this directory:

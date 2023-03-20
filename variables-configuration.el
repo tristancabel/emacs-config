@@ -1,6 +1,13 @@
 ;;; variableconfiguration
 ;;;
 
+;; don't auto-save and back up files
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+
 ;; turn on font-lock mode
 (when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))

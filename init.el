@@ -28,7 +28,34 @@
 
 ;; to test yas-snippet
 
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; get and install required packages
+;;
+;; beacon -> highlight cursor after window moves
+;; company -> Company is a modular in-buffer completion mechanism
+;; company-web -> company for web development
+;; conda  -> to work with conda environment
+;; dash -> A modern list api for Emacs. No 'cl required.
+;; flycheck -> syntax checker
+;; git-gutter -> to have + = on line changes by git
+;; ccls -> replace cquery. c++ front end for language server protocol (eglot)
 ;;;;; eglot -> Language Server Protocol back end
+;; lsp-mode  -> Language Server Protocol back end
+;; lsp-ui -> UI modules of lsp-mode
+;; lsp-python-ms -> python for lsp mode
+;; projectile -> project interaction library for Emacs.
+;; helm -> Emacs incremental completion and selection narrowing framework
+;; helm-ag -> helm with ag for search
+;; helm-dash -> helm integration with dash
+;; helm-projectile -> Helm UI for Projectile
+;; helm-flycheck -> Helm UI for flycheck
+;; magit -> git mode
+;;;;;; realgud -> better debugger
+;; smart-mode-line -> line model
+;; undo-tree -> undo and redo functions
+;; use-package -> The use-package macro allows you to isolate package configuration in your .emacs file in a way that is both performance-oriented and, well, tidy.
+;; which-key -> which-key is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command
+;; neotree -> tree navigation mode (activated on F8)
 ;; rainbow-mode -> colorize color names
 ;;
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -74,19 +101,21 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home "/home/trcabel/miniconda3/")
+ '(ispell-dictionary nil)
  '(ivy-mode t)
  '(lsp-auto-guess-root nil)
  '(lsp-prefer-flymake nil t)
  '(package-selected-packages
-   (quote
-    (markdown-mode json-mode eglot company conda projectile counsel ivy which-key beacon git-gutter-fringe magit which-key-mode beacon-mode undo-tree smart-mode-line use-package))))
+        '(browse-kill-ring markdown-mode json-mode eglot company conda projectile counsel ivy which-key beacon git-gutter-fringe magit which-key-mode beacon-mode undo-tree smart-mode-line use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(company-scrollbar-bg ((t (:background "#458d4e9f51a5"))))
- '(company-scrollbar-fg ((t (:background "#39c6414f43d2"))))
- '(company-tooltip ((t (:inherit default :background "#32b539533b87"))))
+ '(company-scrollbar-bg ((t (:background "#45bb4ed351db"))) t)
+ '(company-scrollbar-fg ((t (:background "#39f441834408"))) t)
+ '(company-tooltip ((t (:inherit default :background "#32e339873bbd"))))
  '(company-tooltip-common ((t (:inherit font-lock-constant-face))))
+ '(company-tooltip-scrollbar-thumb ((t (:background "#39f441834408"))))
+ '(company-tooltip-scrollbar-track ((t (:background "#45bb4ed351db"))))
  '(company-tooltip-selection ((t (:inherit font-lock-function-name-face)))))

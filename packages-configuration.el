@@ -188,19 +188,19 @@
 ;; conda
 ;; to work with conda environment
 ;; ;;;;;;;;;;;;;;;;;;;;
+(defun my/conda_hook ()
+  (let* ((env-name (conda--infer-env-from-buffer))
+         (env-path (concat conda-env-home-directory "/envs/" env-name)))
+    (setq-local lsp-pyright-venv-path env-path)
+    (setq-local mode-line-process (concat "(" env-name ")"))
+    (eglot-reconnect())
+    (message "setting lsp-pyright-venv-path to %s" env-path)))
+
 (use-package conda
   :ensure t
   :init
   (setq conda-anaconda-home (expand-file-name "~/miniconda3"))
   (setq conda-env-home-directory (expand-file-name "~/miniconda3"))
-  (defun my/conda_hook ()
-    (let* ((env-name (conda--infer-env-from-buffer))
-           (env-path (concat conda-env-home-directory "/envs/" env-name)))
-      (setq-local lsp-pyright-venv-path env-path)
-      (setq-local mode-line-process (concat "(" env-name ")"))
-      eglot-reconnect
-      (message "setting lsp-pyright-venv-path to %s" env-path)))
-
    :config
   (conda-env-initialize-interactive-shells)
   (conda-env-initialize-eshell)
@@ -211,7 +211,9 @@
    (conda-postdeactivate-hook . eglot-reconnect)))
 
 (add-hook 'python-mode-hook '(lambda () (when (bound-and-true-p conda-project-env-path)
-                                          (conda-env-activate-for-buffer))))
+                                          (conda-env-activate-for-buffer)
+                                          (eglot-reconnect())
+                                          )))
 ;(add-to-hook 'find-file-hook (lambda () (when (bound-and-true-p conda-project-env-path)
 ;                                          (conda-env-activate-for-buffer))))
 

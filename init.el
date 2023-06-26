@@ -65,6 +65,7 @@
 ;; variable configurations
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-file "~/.emacs.d/variables-configuration.el")
+(load-file "~/.emacs.d/qml-mode.el")
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modes setup
@@ -82,6 +83,7 @@
 (add-to-list 'auto-mode-alist '("\\.hpp$"           . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.hxx$"           . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.qdoc$"          . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.qml$"           . qml-mode))
 (add-to-list 'auto-mode-alist '(".gitignore\\'"     . makefile-mode))
 (add-to-list 'auto-mode-alist '(".gitattributes\\'" . makefile-mode))
 (add-to-list 'auto-mode-alist '("qmldir\\'"         . makefile-mode))
@@ -100,13 +102,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(conda-anaconda-home "/home/trcabel/miniconda3/" t)
+ '(conda-anaconda-home "/home/trcabel/miniconda3/")
  '(ispell-dictionary nil)
  '(ivy-mode t)
  '(lsp-auto-guess-root nil)
  '(lsp-prefer-flymake nil t)
  '(package-selected-packages
-   '(js2-mode lsp-bridge browse-kill-ring markdown-mode json-mode conda projectile counsel ivy which-key beacon git-gutter-fringe magit which-key-mode beacon-mode undo-tree smart-mode-line use-package))
+   '(company-qml js2-mode lsp-bridge browse-kill-ring markdown-mode json-mode conda projectile counsel ivy which-key beacon git-gutter-fringe magit which-key-mode beacon-mode undo-tree smart-mode-line use-package))
  '(safe-local-variable-values
    '((eval setq conda-project-env-path "gnomon")
      (conda-project-env-path . "gnomon")

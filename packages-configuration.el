@@ -256,6 +256,7 @@
                             '((company-capf
                                company-files
                                company-dabbrev-code
+                               company-qml
                                )))))
   :config
   (setq company-idle-delay 0)

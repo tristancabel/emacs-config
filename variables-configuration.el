@@ -38,8 +38,8 @@
 ;; each 50MB of allocated data (the default is on every 0.76MB)
 (setq gc-cons-threshold 50000000)
 
-;; warn when opening files bigger than 100MB
-(setq large-file-warning-threshold 100000000)
+;; warn when opening files bigger than 50MB
+(setq large-file-warning-threshold 50000000)
 
 ;; Newline at end of file
 (setq require-final-newline t)
@@ -82,7 +82,8 @@
 
 ;; nice save
 ;; ;;;;;;;;;;;;;;;;;;;;
-(add-hook 'before-save-hook 'whitespace-cleanup)
+;; see minor mode whitespace-cleanup instead!!
+;;(add-hook 'before-save-hook 'whitespace-cleanup)
 
 ; kill lines backward
 (global-set-key (kbd "C-<backspace>") (lambda ()

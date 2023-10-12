@@ -195,7 +195,7 @@ of beginning of \"item1\"'s parent block."
     (if (not qbob) (message "Not found beginning of block"))
     qbob))
 
-(defvar qml-indent-offset 2)
+(defvar qml-indent-offset 4)
 
 (defun line-emptyp (&optional n)
   (string-match "^[ \t]+$"

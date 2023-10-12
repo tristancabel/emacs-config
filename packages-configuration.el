@@ -24,6 +24,16 @@
   (setq undo-tree-visualizer-diff t)
   (setq undo-tree-auto-save-history nil))
 
+;; whitespace-cleanup-mode
+;; whitespace-cleanup-mode is a minor mode which calls whitespace-cleanup before saving the current buffer,
+;; by default only if the whitespace in the buffer was initially clean. It determines this by quickly checking
+;; to see if whitespace-cleanup would have any effect on the buffer.
+;; ;;;;;;;;;;;;;;;;;;;;
+(use-package whitespace-cleanup-mode
+  :ensure t
+  :config
+  (global-whitespace-cleanup-mode))
+
 
 ;; browse-kill-ring
 ;; to be able to browse kill-ring
@@ -258,6 +268,8 @@
                                company-dabbrev-code
                                company-qml
                                )))))
+  :init
+  (setq company-global-modes '(not gud-mode))
   :config
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 1)
